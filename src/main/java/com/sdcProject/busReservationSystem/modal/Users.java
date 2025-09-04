@@ -1,13 +1,12 @@
 package com.sdcProject.busReservationSystem.modal;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,5 +30,13 @@ public class Users {
     private String gender;
 
     private String password;
+
+    private String image;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",joinColumns = {@JoinColumn(name = "user_id")},inverseJoinColumns = {
+            @JoinColumn(name = "role_id")
+    })
+    List<Roles> roles;
 
 }
