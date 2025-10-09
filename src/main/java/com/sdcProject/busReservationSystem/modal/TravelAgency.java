@@ -21,6 +21,7 @@ public class TravelAgency {
     private String address;
 
     @OneToOne
+    @JoinColumn(name = "userId")
     private Users user;
 
 }
