@@ -39,25 +39,6 @@ public class SecurityConfig {
 
 
 
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(request -> request
-//                        .requestMatchers("/api/auth/**", "/api/oauth2/**", "/login/oauth2/code/**").permitAll()
-//                        .anyRequest().authenticated())
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .oauth2Login(oauth2 -> oauth2
-//                        .userInfoEndpoint(userInfo -> userInfo
-//                                .oidcUserService(customOAuth2UserService))
-//                        .successHandler(oAuth2LoginSuccessHandler))
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-//                .cors();
-//
-//        return http.build();
-//    }
-
     @Bean
     @Order(1)
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
