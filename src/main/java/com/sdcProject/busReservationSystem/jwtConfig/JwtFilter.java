@@ -43,6 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         try {
             username = jwtService.extractUsername(jwtToken);
+            System.out.println("at jwt filter"+username);
         } catch (ExpiredJwtException e) {
             // Token has expired, handle the expired token case
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
