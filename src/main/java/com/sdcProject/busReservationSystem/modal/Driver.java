@@ -15,26 +15,29 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int driverId;
 
-    private String Driver_name;
+    private String driver_name;
 
-    private String Driver_phone;
+    private String driver_phone;
 
-    private String Driver_email;
+    private String driver_email;
 
-    private String Driver_address;
+    private String driver_address;
 
-    private String Driver_photo;
+    @Lob
+    private String driver_photo;
 
     private String driver_license_number;
 
-    @ElementCollection
-    private ArrayList<String> driver_photo;
+
+    @Lob
+    private String license_photo;
 
     @ManyToOne
     @JoinColumn(name = "travelAgencyId")
     private TravelAgency travelAgency;
 
     @OneToOne
-    private Routes routes;
+    @JoinColumn(name = "BusId")
+    private Bus bus;
 
 }

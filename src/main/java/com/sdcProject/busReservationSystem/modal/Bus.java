@@ -34,9 +34,7 @@ public class Bus {
     @JoinColumn(name = "travelAgencyId")
     private TravelAgency travelAgency;
 
-    @OneToOne
-    @JoinColumn(name = "driverId")
-    private Driver driver;
+
 
 
 }
