@@ -31,6 +31,20 @@ public class Driver {
 
     @Lob
     private String license_photo;
+    private String Driver_name;
+
+    private String Driver_phone;
+
+    private String Driver_email;
+
+    private String Driver_address;
+
+    private String Driver_photo;
+
+    private String driver_license_number;
+
+    @ElementCollection
+    private ArrayList<String> driver_photo;
 
     @ManyToOne
     @JoinColumn(name = "travelAgencyId")
@@ -39,5 +53,6 @@ public class Driver {
     @OneToOne
     @JoinColumn(name = "BusId")
     private Bus bus;
+    private Routes routes;
 
 }
