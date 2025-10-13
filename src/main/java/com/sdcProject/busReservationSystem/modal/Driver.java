@@ -39,6 +39,6 @@ public class Driver {
     @OneToOne
     @JoinColumn(name = "BusId")
     private Bus bus;
-    private Routes routes;
+   
 
 }
