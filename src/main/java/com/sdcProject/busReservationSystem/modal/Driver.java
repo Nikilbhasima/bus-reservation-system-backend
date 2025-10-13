@@ -15,6 +15,22 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int driverId;
 
+    private String driver_name;
+
+    private String driver_phone;
+
+    private String driver_email;
+
+    private String driver_address;
+
+    @Lob
+    private String driver_photo;
+
+    private String driver_license_number;
+
+
+    @Lob
+    private String license_photo;
     private String Driver_name;
 
     private String Driver_phone;
@@ -35,6 +51,8 @@ public class Driver {
     private TravelAgency travelAgency;
 
     @OneToOne
+    @JoinColumn(name = "BusId")
+    private Bus bus;
     private Routes routes;
 
 }

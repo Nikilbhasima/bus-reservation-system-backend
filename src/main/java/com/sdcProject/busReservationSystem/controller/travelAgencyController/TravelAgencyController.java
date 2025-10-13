@@ -30,4 +30,5 @@ public class TravelAgencyController {
     public ResponseEntity<TravelAgencyDTO> editTravelAgencyDetails(@RequestBody TravelAgency travelAgency, Authentication authentication) {
         TravelAgencyDTO updatedAgency = travelAgencyImplementation.editTravelAgency(travelAgency, authentication);
         return ResponseEntity.ok(updatedAgency);    }
+
 }
