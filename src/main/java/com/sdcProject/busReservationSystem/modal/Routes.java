@@ -26,4 +26,10 @@ public class Routes {
     private float distance;
 
     private int duration;
+
+    private String latitude;
+
+    private String longitude;
+
+    private float price;
 }

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BusImplementation implements BusInterface {
 
@@ -45,5 +47,13 @@ public class BusImplementation implements BusInterface {
         bus1.setActive(bus.isActive());
 
         return busRepository.save(bus1);
+    }
+
+    @Override
+    public List<Bus> findAllBuses(Authentication auth) {
+        Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
+        TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
+        List<Bus> buses=busRepository.findByTravelAgency(travelAgency);
+        return buses;
     }
 }
