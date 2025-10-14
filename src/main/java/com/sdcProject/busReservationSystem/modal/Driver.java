@@ -23,13 +23,12 @@ public class Driver {
 
     private String driver_address;
 
-    @Lob
+
     private String driver_photo;
 
     private String driver_license_number;
 
 
-    @Lob
     private String license_photo;
 
     @ManyToOne

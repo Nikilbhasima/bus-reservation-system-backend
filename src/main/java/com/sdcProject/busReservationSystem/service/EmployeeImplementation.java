@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EmployeeImplementation implements EmployeeInterface {
 
@@ -49,5 +52,13 @@ public class EmployeeImplementation implements EmployeeInterface {
 
 
         return driverRepository.save(driver1);
+    }
+
+    @Override
+    public List<Driver> getDriversByAgency(Authentication auth) {
+        Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
+        TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
+        List<Driver> drivers=driverRepository.findByTravelAgency(travelAgency);
+        return drivers;
     }
 }

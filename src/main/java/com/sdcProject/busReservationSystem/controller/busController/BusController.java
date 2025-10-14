@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/bus")
 public class BusController {
@@ -26,5 +29,16 @@ public class BusController {
     public ResponseEntity<BusDTO> editBus(@RequestBody Bus bus, @PathVariable int busId ) {
         BusDTO busDTO=new BusDTO(busImplementation.editBus(bus, busId));
         return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
+    }
+
+    @GetMapping("/getAllBusByTravelAgency")
+    public ResponseEntity<List<BusDTO>> getAllBusByTravelAgency( Authentication auth) {
+        List<Bus> buses=busImplementation.findAllBuses(auth);
+        List<BusDTO> busDTOs=new ArrayList<>();
+        for (Bus bus : buses) {
+            BusDTO busDTO=new BusDTO(bus);
+            busDTOs.add(busDTO);
+        }
+        return  ResponseEntity.status(HttpStatus.OK).body(busDTOs);
     }
 }

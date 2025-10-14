@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/employee")
 public class EmployeeController {
@@ -26,5 +29,15 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> editEmployee(@RequestBody Driver driver, @PathVariable int employeeId) {
         EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.editDriver(driver, employeeId));
         return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
+    }
+    @GetMapping("/getEmployeeByTravelAgency")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeeByTravelAgency(Authentication authentication) {
+        List<Driver>  drivers=employeeInterface.getDriversByAgency(authentication);
+        List<EmployeeDTO> employeeDTOS=new ArrayList<>();
+        for(Driver driver:drivers){
+            employeeDTOS.add(new EmployeeDTO(driver));
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDTOS);
     }
 }
