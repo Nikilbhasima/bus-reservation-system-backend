@@ -39,9 +39,7 @@ public class Bus {
     private Routes routes;
 
 
-    @OneToOne
-    @JoinColumn(name = "driverId")
-    private Driver driver;
+
 
 
 }
