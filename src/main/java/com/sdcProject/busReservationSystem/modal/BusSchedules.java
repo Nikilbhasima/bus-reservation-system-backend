@@ -1,14 +1,13 @@
 package com.sdcProject.busReservationSystem.modal;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 @Entity
 @Getter
@@ -19,11 +18,15 @@ public class BusSchedules {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int busScheduleId;
 
-    private Date departureDate;
+    private LocalDate departureDate;
 
-    private Time departureTime;
+    private LocalTime departureTime;
 
-    private Time arrivalTime;
+
+
+    @ManyToOne
+    @JoinColumn(name = "travelAgencyId")
+    private TravelAgency travelAgency;
 
 
 }

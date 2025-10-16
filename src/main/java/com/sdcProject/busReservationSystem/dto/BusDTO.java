@@ -11,15 +11,7 @@ import java.util.List;
 @Getter
 public class BusDTO {
 
-    public BusDTO(Bus bus) {
-        this.busId=bus.getBusId();
-        this.busType=bus.getBusType();
-        this.busName=bus.getBusName();
-        this.busRegistrationNumber=bus.getBusRegistrationNumber();
-        this.busphotos=bus.getBusphotos();
-        this.totalSeats=bus.getTotalSeats();
-        this.isActive=bus.isActive();
-    }
+
 
     private int busId;
 
@@ -34,5 +26,22 @@ public class BusDTO {
     private List<String> busphotos;
 
     private boolean isActive;
+
+    private String currentBusLocation;
+
+    private float increasedPrice;
+
+
+    public BusDTO(Bus bus) {
+        this.busId=bus.getBusId();
+        this.busType=bus.getBusType();
+        this.busName=bus.getBusName();
+        this.busRegistrationNumber=bus.getBusRegistrationNumber();
+        this.busphotos=bus.getBusphotos();
+        this.totalSeats=bus.getTotalSeats();
+        this.isActive=bus.isActive();
+        this.currentBusLocation=bus.getCurrentBusLocation();
+        this.increasedPrice=bus.getIncreasedPrice();
+    }
 
 }

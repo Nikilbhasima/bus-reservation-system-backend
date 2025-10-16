@@ -1,14 +1,17 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.modal.Driver;
+import com.sdcProject.busReservationSystem.modal.Roles;
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.repository.DriverRepository;
+import com.sdcProject.busReservationSystem.repository.RoleRepository;
 import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,11 +29,28 @@ public class EmployeeImplementation implements EmployeeInterface {
     @Autowired
     private TravelAgencyRepository travelAgencyRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Driver addDriverDetails(Driver driver, Authentication authentication) {
         Users user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
         TravelAgency travelAgency=travelAgencyRepository.findByUser(user);
         driver.setTravelAgency(travelAgency);
+
+        Users user2=new Users();
+        user2.setEmail(driver.getDriver_email());
+        user2.setPhoneNumber(driver.getDriver_phone());
+        user2.setPassword(passwordEncoder.encode("12345678"));
+        Roles role=roleRepository.findByRole("ROLE_BUS").orElseThrow(() -> new RuntimeException("Role not found"));
+        List<Roles> roles=new ArrayList<>();
+        roles.add(role);
+        user2.setRoles(roles);
+        userRepository.save(user2);
+
         return driverRepository.save(driver);
     }
 

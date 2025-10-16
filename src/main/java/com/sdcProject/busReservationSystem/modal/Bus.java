@@ -38,8 +38,16 @@ public class Bus {
     @JoinColumn(name = "routeId")
     private Routes routes;
 
+    private String currentBusLocation;
 
+    private float increasedPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "busScheduleId")
+    private BusSchedules busSchedules;
+
+    @ElementCollection
+    private List<String> amenities;
 
 
 }
