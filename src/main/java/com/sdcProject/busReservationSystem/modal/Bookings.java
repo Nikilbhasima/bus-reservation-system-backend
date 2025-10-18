@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,17 +23,24 @@ public class Bookings {
     @JoinColumn(name = "userId")
     private Users user;
 
-    @ManyToOne
-    @JoinColumn(name = "busScheduleId")
-    private BusSchedules busSchedules;
+    private int totalSeats;
 
-    private int totatSeats;
+    private LocalDate bookingDate;
 
-    private Date bookingDate;
+    private LocalDate tripDate;
 
     private BookingStatus status;
 
     private PaymentStatus paymentStatus;
 
     private String cancellationReason;
+
+    @ElementCollection
+    private List<String> seatName;
+
+    @ManyToOne
+    @JoinColumn(name = "busId")
+    private Bus busId;
+
+
 }

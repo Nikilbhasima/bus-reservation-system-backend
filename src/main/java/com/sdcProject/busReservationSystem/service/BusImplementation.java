@@ -45,6 +45,8 @@ public class BusImplementation implements BusInterface {
         bus1.setTotalSeats(bus.getTotalSeats());
         bus1.setBusphotos(bus.getBusphotos());
         bus1.setActive(bus.isActive());
+        bus1.setCurrentBusLocation(bus.getCurrentBusLocation());
+        bus1.setIncreasedPrice(bus.getIncreasedPrice());
 
         return busRepository.save(bus1);
     }
