@@ -18,7 +18,7 @@ public class BusSchedules {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int busScheduleId;
 
-    private LocalDate departureDate;
+    private String period;
 
     private LocalTime departureTime;
 
