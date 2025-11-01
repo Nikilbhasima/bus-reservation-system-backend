@@ -16,7 +16,7 @@ public class BusScheduleDTO {
 
     private int busScheduleId;
 
-    private LocalDate departureDate;
+    private String period;
 
     private LocalTime departureTime;
 
@@ -24,6 +24,6 @@ public class BusScheduleDTO {
 
     public BusScheduleDTO(BusSchedules busSchedules) {
         this.busScheduleId=busSchedules.getBusScheduleId();
-        this.departureDate=busSchedules.getDepartureDate();
+        this.period=busSchedules.getPeriod();
         this.departureTime=busSchedules.getDepartureTime();}
 }

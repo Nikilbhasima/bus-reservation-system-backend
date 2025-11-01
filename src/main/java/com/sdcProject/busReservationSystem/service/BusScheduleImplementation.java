@@ -40,7 +40,7 @@ public class BusScheduleImplementation implements BusScheduleInterface {
     public BusSchedules editBusSchedules(BusSchedules busSchedules, int busScheduleId) {
         BusSchedules busSchedules1=busScheduleRespository.findById(busScheduleId).orElseThrow(() -> new RuntimeException("BusSchedule not found"));
         busSchedules1.setDepartureTime(busSchedules.getDepartureTime());
-        busSchedules1.setDepartureDate(busSchedules.getDepartureDate());
+        busSchedules1.setPeriod(busSchedules.getPeriod());
 
         return busScheduleRespository.save(busSchedules1);
     }
