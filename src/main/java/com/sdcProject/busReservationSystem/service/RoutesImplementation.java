@@ -34,6 +34,7 @@ public class RoutesImplementation implements RoutesInterface {
         if (travelAgency == null) {
             throw new RuntimeException("Travel agency not found for user: " + auth.getName());
         }
+
         routes.setTravelAgency(travelAgency);
         return routesRepository.save(routes);
     }
@@ -44,8 +45,10 @@ public class RoutesImplementation implements RoutesInterface {
         routes1.setRouteName(routes.getRouteName());
         routes1.setDuration(routes.getDuration());
         routes1.setDistance(routes.getDistance());
-        routes1.setLongitude(routes.getLongitude());
-        routes1.setLatitude(routes.getLatitude());
+        routes1.setLatitudeS(routes.getLatitudeS());
+        routes1.setLongitudeS(routes.getLongitudeS());
+        routes1.setLongitudeD(routes.getLongitudeD());
+        routes1.setLatitudeD(routes.getLatitudeD());
         routes1.setDestinationCity(routes.getDestinationCity());
         routes1.setSourceCity(routes.getSourceCity());
         routes1.setPrice(routes.getPrice());
