@@ -70,6 +70,14 @@ public class EmployeeImplementation implements EmployeeInterface {
             driver1.setBus(driver.getBus());
         }
 
+        Users users=userRepository.findByEmail(driver.getDriver_email()).orElseThrow(() -> new RuntimeException("User not found"));
+        users.setUsername(driver.getDriver_name());
+        users.setPhoneNumber(driver.getDriver_phone());
+        users.setEmail(driver.getDriver_email());
+        users.setAddress(driver.getDriver_address());
+        users.setImage(driver.getDriver_photo());
+        userRepository.save(users);
+
 
         return driverRepository.save(driver1);
     }
@@ -80,5 +88,12 @@ public class EmployeeImplementation implements EmployeeInterface {
         TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
         List<Driver> drivers=driverRepository.findByTravelAgency(travelAgency);
         return drivers;
+    }
+
+    @Override
+    public Driver getDriverById(int driverId) {
+        Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        return driver;
     }
 }

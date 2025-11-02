@@ -58,4 +58,10 @@ public class BusImplementation implements BusInterface {
         List<Bus> buses=busRepository.findByTravelAgency(travelAgency);
         return buses;
     }
+
+    @Override
+    public Bus getBusById(int busId) {
+        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+        return bus;
+    }
 }

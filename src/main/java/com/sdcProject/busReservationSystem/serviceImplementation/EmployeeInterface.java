@@ -12,4 +12,6 @@ public interface EmployeeInterface {
     public Driver editDriver(Driver driver,int driverId);
 
     public List<Driver> getDriversByAgency(Authentication auth);
+
+    public Driver getDriverById(int driverId);
 }

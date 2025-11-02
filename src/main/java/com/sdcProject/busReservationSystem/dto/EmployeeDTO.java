@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.dto;
 
+import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.modal.Driver;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,16 +11,6 @@ import java.util.ArrayList;
 @Setter
 public class EmployeeDTO {
 
-    public EmployeeDTO(Driver driver) {
-        this.driverId=driver.getDriverId();
-        this.driver_address=driver.getDriver_address();
-        this.driver_name=driver.getDriver_name();
-        this.driver_phone=driver.getDriver_phone();
-        this.driver_email=driver.getDriver_email();
-        this.driver_license_number=driver.getDriver_license_number();
-        this.license_photo=driver.getLicense_photo();
-        this.driver_photo=driver.getDriver_photo();
-    }
 
     private int driverId;
 
@@ -35,5 +26,19 @@ public class EmployeeDTO {
 
     private String driver_license_number;
 
+    private Bus Bus;
+
     private String license_photo;
+    public EmployeeDTO(Driver driver) {
+        this.driverId=driver.getDriverId();
+        this.driver_address=driver.getDriver_address();
+        this.driver_name=driver.getDriver_name();
+        this.driver_phone=driver.getDriver_phone();
+        this.driver_email=driver.getDriver_email();
+        this.driver_license_number=driver.getDriver_license_number();
+        this.license_photo=driver.getLicense_photo();
+        this.driver_photo=driver.getDriver_photo();
+        this.Bus=driver.getBus();
+    }
+
 }

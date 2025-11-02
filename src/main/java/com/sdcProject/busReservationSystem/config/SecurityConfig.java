@@ -44,11 +44,13 @@ public class SecurityConfig {
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("oauth2/**", "/login/oauth2/code/**")
+
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(customOAuth2UserService))
-                        .successHandler(oAuth2LoginSuccessHandler));
+                        .successHandler(oAuth2LoginSuccessHandler))
+                .cors();
 
         return http.build();
     }
@@ -64,7 +66,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors();
 
         return http.build();
     }

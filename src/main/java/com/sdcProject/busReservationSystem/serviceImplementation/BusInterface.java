@@ -12,4 +12,6 @@ public interface BusInterface {
     public Bus editBus(Bus bus, int bus_id);
 
     public List<Bus> findAllBuses(Authentication auth);
+
+    public Bus getBusById(int busId);
 }
