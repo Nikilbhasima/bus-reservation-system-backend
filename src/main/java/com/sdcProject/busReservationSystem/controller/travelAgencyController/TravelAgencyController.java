@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/travelAgency")
+    @RequestMapping("api/travelAgency")
 public class TravelAgencyController {
 
     @Autowired
@@ -28,7 +25,13 @@ public class TravelAgencyController {
 
     @PostMapping("/editTravelAgencyDetials")
     public ResponseEntity<TravelAgencyDTO> editTravelAgencyDetails(@RequestBody TravelAgency travelAgency, Authentication authentication) {
-        TravelAgencyDTO updatedAgency = travelAgencyImplementation.editTravelAgency(travelAgency, authentication);
+        TravelAgencyDTO updatedAgency =travelAgencyImplementation.editTravelAgency(travelAgency,authentication);
         return ResponseEntity.ok(updatedAgency);    }
+
+    @GetMapping("/getTravelAgencyDetails")
+    public ResponseEntity<TravelAgencyDTO> getTravelAgencyDetails(Authentication authentication) {
+        TravelAgencyDTO travelAgencyDTO=new TravelAgencyDTO(travelAgencyImplementation.getTravelAgency(authentication));
+        return ResponseEntity.status(HttpStatus.OK).body(travelAgencyDTO);
+    }
 
 }

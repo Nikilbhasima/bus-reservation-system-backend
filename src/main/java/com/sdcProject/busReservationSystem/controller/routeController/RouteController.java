@@ -21,6 +21,7 @@ public class RouteController {
 
     @PostMapping("/addRoute")
     public ResponseEntity<RoutesDTO> addRoute(@RequestBody Routes routes, Authentication auth) {
+        System.out.println("this is route controller");
         RoutesDTO routesDTO= new RoutesDTO(routesImplementation.addRoutes(routes,auth)) ;
         return ResponseEntity.status(HttpStatus.CREATED).body(routesDTO);
     }
