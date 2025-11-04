@@ -10,4 +10,6 @@ public interface TravelAgencyInterface {
     public void addTravelAgency(@RequestBody TravelAgency travelAgency, Authentication authentication);
 
     public TravelAgencyDTO editTravelAgency(@RequestBody TravelAgency travelAgency, Authentication authentication);
+
+    public TravelAgency getTravelAgency(Authentication authentication);
 }
