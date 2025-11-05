@@ -34,6 +34,7 @@ public class BusDTO {
     private List<String> amenities;
 
 
+
     public BusDTO(Bus bus) {
         this.busId=bus.getBusId();
         this.busType=bus.getBusType();

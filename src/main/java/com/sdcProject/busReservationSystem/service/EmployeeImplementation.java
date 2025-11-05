@@ -1,13 +1,7 @@
 package com.sdcProject.busReservationSystem.service;
 
-import com.sdcProject.busReservationSystem.modal.Driver;
-import com.sdcProject.busReservationSystem.modal.Roles;
-import com.sdcProject.busReservationSystem.modal.TravelAgency;
-import com.sdcProject.busReservationSystem.modal.Users;
-import com.sdcProject.busReservationSystem.repository.DriverRepository;
-import com.sdcProject.busReservationSystem.repository.RoleRepository;
-import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
-import com.sdcProject.busReservationSystem.repository.UserRepository;
+import com.sdcProject.busReservationSystem.modal.*;
+import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,6 +28,9 @@ public class EmployeeImplementation implements EmployeeInterface {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private BusRepository busRepository;
 
     @Override
     public Driver addDriverDetails(Driver driver, Authentication authentication) {
@@ -67,7 +64,8 @@ public class EmployeeImplementation implements EmployeeInterface {
         driver1.setBus(driver.getBus());
         driver1.setTravelAgency(driver.getTravelAgency());
         if (driver.getBus() != null) {
-            driver1.setBus(driver.getBus());
+            Bus bus=busRepository.findById(driver.getBus().getBusId()).orElseThrow(()->new RuntimeException("Bus Not Found"));
+            driver1.setBus(bus);
         }
 
         Users users=userRepository.findByEmail(driver.getDriver_email()).orElseThrow(() -> new RuntimeException("User not found"));
