@@ -31,6 +31,8 @@ public class BusDTO {
 
     private float increasedPrice;
 
+    private List<String> amenities;
+
 
     public BusDTO(Bus bus) {
         this.busId=bus.getBusId();
@@ -42,6 +44,7 @@ public class BusDTO {
         this.isActive=bus.isActive();
         this.currentBusLocation=bus.getCurrentBusLocation();
         this.increasedPrice=bus.getIncreasedPrice();
+        this.amenities=bus.getAmenities();
     }
 
 }
