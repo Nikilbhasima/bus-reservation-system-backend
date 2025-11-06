@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.modal;
 
+import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import com.sdcProject.busReservationSystem.enumFile.BusType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class Bus {
     @JoinColumn(name = "travelAgencyId")
     private TravelAgency travelAgency;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "routeId")
     private Routes routes;
 
@@ -48,6 +49,8 @@ public class Bus {
 
     @ElementCollection
     private List<String> amenities;
+
+    private AssignStatus assignStatus;
 
 
 }

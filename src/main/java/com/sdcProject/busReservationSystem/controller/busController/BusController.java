@@ -27,6 +27,7 @@ public class BusController {
 
     @PostMapping("/editBus/{busId}")
     public ResponseEntity<BusDTO> editBus(@RequestBody Bus bus, @PathVariable int busId ) {
+        System.out.println("i want to edit the bus");
         BusDTO busDTO=new BusDTO(busImplementation.editBus(bus, busId));
         return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }

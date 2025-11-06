@@ -12,4 +12,6 @@ public interface RoutesInterface {
     public Routes updateRoutes (Routes routes, int routeIds);
 
     public List<Routes> getAllRoutes(Authentication auth);
+
+    public Routes getRouteById(int routeId);
 }

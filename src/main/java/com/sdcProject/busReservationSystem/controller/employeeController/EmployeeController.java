@@ -27,6 +27,7 @@ public class EmployeeController {
 
     @PostMapping("editEmployee/{employeeId}")
     public ResponseEntity<EmployeeDTO> editEmployee(@RequestBody Driver driver, @PathVariable int employeeId) {
+        System.out.println("Employee edit::::");
         EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.editDriver(driver, employeeId));
         return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
     }
