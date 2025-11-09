@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.dto;
 
 
+import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import com.sdcProject.busReservationSystem.modal.Routes;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class RoutesDTO {
     private String longitudeD;
 
     private float price;
+
 
     public RoutesDTO(Routes routes) {
         this.routeId = routes.getRouteId();

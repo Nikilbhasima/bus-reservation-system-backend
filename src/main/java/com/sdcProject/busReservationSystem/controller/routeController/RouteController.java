@@ -21,6 +21,7 @@ public class RouteController {
 
     @PostMapping("/addRoute")
     public ResponseEntity<RoutesDTO> addRoute(@RequestBody Routes routes, Authentication auth) {
+        System.out.println("this is route controller");
         RoutesDTO routesDTO= new RoutesDTO(routesImplementation.addRoutes(routes,auth)) ;
         return ResponseEntity.status(HttpStatus.CREATED).body(routesDTO);
     }
@@ -42,5 +43,11 @@ public class RouteController {
         }
 
         return  ResponseEntity.status(HttpStatus.OK).body(routesDTOs);
+    }
+
+    @GetMapping("/getRouteById/{id}")
+    public ResponseEntity<RoutesDTO> getRouteById(@PathVariable("id") int routeId) {
+        RoutesDTO routesDTO=new RoutesDTO(routesImplementation.getRouteById(routeId));
+        return ResponseEntity.status(HttpStatus.OK).body(routesDTO);
     }
 }

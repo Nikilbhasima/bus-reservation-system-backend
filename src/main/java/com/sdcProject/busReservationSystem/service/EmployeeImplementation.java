@@ -1,13 +1,8 @@
 package com.sdcProject.busReservationSystem.service;
 
-import com.sdcProject.busReservationSystem.modal.Driver;
-import com.sdcProject.busReservationSystem.modal.Roles;
-import com.sdcProject.busReservationSystem.modal.TravelAgency;
-import com.sdcProject.busReservationSystem.modal.Users;
-import com.sdcProject.busReservationSystem.repository.DriverRepository;
-import com.sdcProject.busReservationSystem.repository.RoleRepository;
-import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
-import com.sdcProject.busReservationSystem.repository.UserRepository;
+import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
+import com.sdcProject.busReservationSystem.modal.*;
+import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,6 +30,9 @@ public class EmployeeImplementation implements EmployeeInterface {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private BusRepository busRepository;
+
     @Override
     public Driver addDriverDetails(Driver driver, Authentication authentication) {
         Users user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -49,6 +47,14 @@ public class EmployeeImplementation implements EmployeeInterface {
         List<Roles> roles=new ArrayList<>();
         roles.add(role);
         user2.setRoles(roles);
+
+        if(driver.getBus()!=null && driver.getBus().getBusId()!=0){
+            Bus bus=busRepository.findById(driver.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));
+            driver.setBus(bus);
+            bus.setAssignStatus(AssignStatus.ASSIGN);
+            busRepository.save(bus);
+        }
+
         userRepository.save(user2);
 
         return driverRepository.save(driver);
@@ -56,6 +62,7 @@ public class EmployeeImplementation implements EmployeeInterface {
 
     @Override
     public Driver editDriver(Driver driver, int driverId) {
+        System.out.println("Driver edit");
         Driver driver1=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
 
         driver1.setDriver_name(driver.getDriver_name());
@@ -65,10 +72,21 @@ public class EmployeeImplementation implements EmployeeInterface {
         driver1.setDriver_license_number(driver.getDriver_license_number());
         driver1.setLicense_photo(driver.getLicense_photo());
         driver1.setBus(driver.getBus());
-        driver1.setTravelAgency(driver.getTravelAgency());
-        if (driver.getBus() != null) {
-            driver1.setBus(driver.getBus());
+        if (driver.getBus() != null && driver.getBus().getBusId()!=0) {
+            Bus oldBus=busRepository.findById(driver1.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));
+            oldBus.setAssignStatus(AssignStatus.UNASSIGN);
+            Bus bus=busRepository.findById(driver.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));
+            bus.setAssignStatus(AssignStatus.ASSIGN);
+            driver1.setBus(bus);
         }
+
+        Users users=userRepository.findByEmail(driver.getDriver_email()).orElseThrow(() -> new RuntimeException("User not found"));
+        users.setUsername(driver.getDriver_name());
+        users.setPhoneNumber(driver.getDriver_phone());
+        users.setEmail(driver.getDriver_email());
+        users.setAddress(driver.getDriver_address());
+        users.setImage(driver.getDriver_photo());
+        userRepository.save(users);
 
 
         return driverRepository.save(driver1);
@@ -80,5 +98,12 @@ public class EmployeeImplementation implements EmployeeInterface {
         TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
         List<Driver> drivers=driverRepository.findByTravelAgency(travelAgency);
         return drivers;
+    }
+
+    @Override
+    public Driver getDriverById(int driverId) {
+        Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        return driver;
     }
 }

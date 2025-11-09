@@ -63,4 +63,10 @@ public class RoutesImplementation implements RoutesInterface {
         List<Routes> routes=routesRepository.findByTravelAgency(travelAgency);
         return routes;
     }
+
+    @Override
+    public Routes getRouteById(int routeId) {
+        Routes routes=routesRepository.findById(routeId).orElseThrow(()->new RuntimeException("Route not found"));
+        return routes;
+    }
 }

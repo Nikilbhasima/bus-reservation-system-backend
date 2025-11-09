@@ -27,9 +27,11 @@ public class EmployeeController {
 
     @PostMapping("editEmployee/{employeeId}")
     public ResponseEntity<EmployeeDTO> editEmployee(@RequestBody Driver driver, @PathVariable int employeeId) {
+        System.out.println("Employee edit::::");
         EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.editDriver(driver, employeeId));
         return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
     }
+
     @GetMapping("/getEmployeeByTravelAgency")
     public ResponseEntity<List<EmployeeDTO>> getEmployeeByTravelAgency(Authentication authentication) {
         List<Driver>  drivers=employeeInterface.getDriversByAgency(authentication);
@@ -39,5 +41,13 @@ public class EmployeeController {
 
         }
         return ResponseEntity.status(HttpStatus.OK).body(employeeDTOS);
+    }
+
+    @GetMapping("/getEmployeeById/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable  int id) {
+
+        EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.getDriverById(id));
+
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
     }
 }

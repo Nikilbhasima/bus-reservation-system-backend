@@ -34,7 +34,7 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
 
     @Override
     public TravelAgencyDTO editTravelAgency(TravelAgency travelAgency, Authentication authentication) {
-
+        System.out.println("i want to edit travel agency");
         Users user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -49,5 +49,12 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
         travelAgency1.setAgency_logo(travelAgency.getAgency_logo());
         TravelAgencyDTO travelAgencyDTO=new TravelAgencyDTO(travelAgencyRepository.save(travelAgency1));
         return travelAgencyDTO;
+    }
+
+    @Override
+    public TravelAgency getTravelAgency(Authentication authentication) {
+        Users user=userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
+        TravelAgency travelAgency=travelAgencyRepository.findByUser(user);
+        return travelAgency;
     }
 }
