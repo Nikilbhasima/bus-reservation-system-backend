@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -112,5 +115,53 @@ public class BusImplementation implements BusInterface {
     public Bus getBusById(int busId) {
         Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
         return bus;
+    }
+
+    @Override
+    public List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate) {
+//get list of route
+        List<Routes> listOfRoutes=routesRepository.findMatchingRoutes(routes.getSourceCity(),routes.getDestinationCity());
+        if (listOfRoutes == null) {
+            throw new RuntimeException("Routes not found");
+        }
+//get list of buses
+        ArrayList<Bus> buses=new ArrayList<Bus>();
+        for (Routes route : listOfRoutes) {
+            List<Bus> buses1=busRepository.findByRoutes(route);
+            buses.addAll(buses1);
+        }
+
+        LocalDate today = LocalDate.now();
+        int daysDifference = (int)ChronoUnit.DAYS.between(today, travelDate);
+        System.out.println("date difference"+daysDifference);
+
+        ArrayList<Bus> finalBusList=new ArrayList<>();
+//        finding current location of bus by date
+        if (daysDifference >0) {
+            for (int i=daysDifference;i>0;i--) {
+                for (Bus bus : buses) {
+                    if(bus.getCurrentBusLocation().equals(bus.getRoutes().getSourceCity())){
+                        bus.setCurrentBusLocation(bus.getRoutes().getDestinationCity());
+                    }else if(bus.getCurrentBusLocation().equals(bus.getRoutes().getDestinationCity())){
+                        bus.setCurrentBusLocation(bus.getRoutes().getSourceCity());
+                    }
+                }
+            }
+
+            for (Bus bus : buses) {
+                if (bus.getCurrentBusLocation().toLowerCase().contains(routes.getSourceCity().toLowerCase())) {
+                    finalBusList.add(bus);
+                }
+            }
+            return finalBusList;
+        }else {
+            for (Bus bus : buses) {
+                if (bus.getCurrentBusLocation().toLowerCase().contains(routes.getSourceCity().toLowerCase())) {
+                    finalBusList.add(bus);
+                }
+            }
+            return buses;
+        }
+
     }
 }
