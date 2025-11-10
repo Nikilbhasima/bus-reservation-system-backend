@@ -57,9 +57,9 @@ public class CustomOAuth2UserService extends OidcUserService {
         newUser.setEmail(email);
         newUser.setUsername(name);
         newUser.setImage(picture);
-        newUser.setAddress(address);
-        newUser.setGender(gender);
-        newUser.setPhoneNumber(phoneNumber);
+        newUser.setAddress(null);
+        newUser.setGender(null);
+        newUser.setPhoneNumber(null);
 
         // Set default role for OAuth2 users (ROLE_USER)
         List<Roles> roles = new ArrayList<>();

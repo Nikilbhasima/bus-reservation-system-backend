@@ -69,17 +69,4 @@ public class CustomOAuth2User implements OidcUser {
         return getAttribute("picture");
     }
 
-    public String getGender() {
-        return getAttribute("gender");
-    }
-
-    public AddressStandardClaim getUserAddress() {
-        return oidcUser.getAddress();
-    }
-
-
-    public String getPhoneNumber() {
-        return getAttribute("phone_number");
-    }
-
 }
