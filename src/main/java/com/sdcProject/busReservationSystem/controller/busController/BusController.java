@@ -2,6 +2,7 @@ package com.sdcProject.busReservationSystem.controller.busController;
 
 import com.sdcProject.busReservationSystem.dto.BusDTO;
 import com.sdcProject.busReservationSystem.modal.Bus;
+import com.sdcProject.busReservationSystem.modal.Routes;
 import com.sdcProject.busReservationSystem.service.BusImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +49,17 @@ public class BusController {
     public ResponseEntity<BusDTO> getBusById(@PathVariable("id") int busId) {
         BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId));
         return ResponseEntity.status(HttpStatus.OK).body(busDTO);
+    }
+
+    @GetMapping("/getBusesByRoute/{travelDate}")
+    public ResponseEntity<List<BusDTO>> getBusesByRoute(@RequestBody Routes routes,@PathVariable LocalDate travelDate) {
+        List<Bus> buses=busImplementation.getBusesByRoute(routes,travelDate);
+        List<BusDTO> busDTOs=new ArrayList<>();
+        for (Bus bus : buses) {
+            BusDTO busDTO=new BusDTO(bus);
+            busDTOs.add(busDTO);
+        }
+        return
+                ResponseEntity.status(HttpStatus.OK).body(busDTOs);
     }
 }
