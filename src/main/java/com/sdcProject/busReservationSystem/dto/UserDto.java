@@ -15,7 +15,6 @@ public class UserDto {
     private String phoneNumber;
     private String address;
     private String gender;
-    private String password;
     private String image;
 
 
@@ -26,7 +25,6 @@ public class UserDto {
         this.phoneNumber = user.getPhoneNumber();
         this.address = user.getAddress();
         this.gender = user.getGender();
-        this.password = user.getPassword();
         this.image = user.getImage();
 
     }

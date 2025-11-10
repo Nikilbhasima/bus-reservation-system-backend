@@ -31,7 +31,6 @@
             // Load user details to generate JWT token
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(oAuth2User.getEmail());
             String jwtToken = jwtService.generateToken(userDetails);
-            System.out.println("this is generated token"+jwtToken);
 
             // Redirect to frontend with JWT token
             String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/oauth2/redirect")
