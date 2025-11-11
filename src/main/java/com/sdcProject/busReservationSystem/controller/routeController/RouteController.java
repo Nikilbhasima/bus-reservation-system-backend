@@ -44,4 +44,10 @@ public class RouteController {
 
         return  ResponseEntity.status(HttpStatus.OK).body(routesDTOs);
     }
+
+    @GetMapping("/getRouteById/{id}")
+    public ResponseEntity<RoutesDTO> getRouteById(@PathVariable("id") int routeId) {
+        RoutesDTO routesDTO=new RoutesDTO(routesImplementation.getRouteById(routeId));
+        return ResponseEntity.status(HttpStatus.OK).body(routesDTO);
+    }
 }

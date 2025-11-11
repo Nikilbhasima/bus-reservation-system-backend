@@ -1,7 +1,11 @@
 package com.sdcProject.busReservationSystem.controller.authenticationController;
 
+import com.sdcProject.busReservationSystem.dto.UserDto;
+import com.sdcProject.busReservationSystem.service.UserImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +21,8 @@ public class JwtAuthController {
 
     @Autowired
     private JwtAuthService jwtAuthService;
+
+
 
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(@RequestBody AuthenticationRegisterRequest authenticationRegisterRequest) {
@@ -38,4 +44,6 @@ public class JwtAuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequest authRequest) {
         return ResponseEntity.ok(jwtAuthService.authenticate(authRequest));
     }
+
+
 }

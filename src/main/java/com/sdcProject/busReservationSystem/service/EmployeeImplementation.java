@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.service;
 
+import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
@@ -46,6 +47,14 @@ public class EmployeeImplementation implements EmployeeInterface {
         List<Roles> roles=new ArrayList<>();
         roles.add(role);
         user2.setRoles(roles);
+
+        if(driver.getBus()!=null && driver.getBus().getBusId()!=0){
+            Bus bus=busRepository.findById(driver.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));
+            driver.setBus(bus);
+            bus.setAssignStatus(AssignStatus.ASSIGN);
+            busRepository.save(bus);
+        }
+
         userRepository.save(user2);
 
         return driverRepository.save(driver);
@@ -53,6 +62,7 @@ public class EmployeeImplementation implements EmployeeInterface {
 
     @Override
     public Driver editDriver(Driver driver, int driverId) {
+        System.out.println("Driver edit");
         Driver driver1=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
 
         driver1.setDriver_name(driver.getDriver_name());
@@ -62,9 +72,11 @@ public class EmployeeImplementation implements EmployeeInterface {
         driver1.setDriver_license_number(driver.getDriver_license_number());
         driver1.setLicense_photo(driver.getLicense_photo());
         driver1.setBus(driver.getBus());
-        driver1.setTravelAgency(driver.getTravelAgency());
-        if (driver.getBus() != null) {
-            Bus bus=busRepository.findById(driver.getBus().getBusId()).orElseThrow(()->new RuntimeException("Bus Not Found"));
+        if (driver.getBus() != null && driver.getBus().getBusId()!=0) {
+            Bus oldBus=busRepository.findById(driver1.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));
+            oldBus.setAssignStatus(AssignStatus.UNASSIGN);
+            Bus bus=busRepository.findById(driver.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));
+            bus.setAssignStatus(AssignStatus.ASSIGN);
             driver1.setBus(bus);
         }
 

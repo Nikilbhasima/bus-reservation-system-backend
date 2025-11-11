@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.modal;
 
+import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,4 +37,5 @@ public class Routes {
     private String longitudeD;
 
     private float price;
+
 }

@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.modal;
 
+import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,5 +39,7 @@ public class Driver {
     @OneToOne
     @JoinColumn(name = "BusId")
     private Bus bus;
+
+
 
 }
