@@ -34,7 +34,10 @@ public class UserImplementation implements UserInterface {
         users.setUsername(user.getUsername());
         users.setPhoneNumber(user.getPhoneNumber());
         users.setGender(user.getGender());
-        users.setPassword( passwordEncoder.encode(user.getPassword()) );
+        if(user.getPassword()!=null){
+            users.setPassword( passwordEncoder.encode(user.getPassword()) );
+
+        }
         return userRepository.save(users);
     }
 
