@@ -52,7 +52,12 @@ public class BusController {
     }
 
     @GetMapping("/getBusesByRoute/{travelDate}")
-    public ResponseEntity<List<BusDTO>> getBusesByRoute(@RequestBody Routes routes,@PathVariable LocalDate travelDate) {
+    public ResponseEntity<List<BusDTO>> getBusesByRoute(    @RequestParam String sourceCity,
+                                                            @RequestParam String destinationCity,
+                                                            @PathVariable LocalDate travelDate) {
+        Routes routes=new Routes();
+        routes.setSourceCity(sourceCity);
+        routes.setDestinationCity(destinationCity);
         List<Bus> buses=busImplementation.getBusesByRoute(routes,travelDate);
         List<BusDTO> busDTOs=new ArrayList<>();
         for (Bus bus : buses) {
