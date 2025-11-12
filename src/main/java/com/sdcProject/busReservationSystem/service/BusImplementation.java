@@ -142,8 +142,11 @@ public class BusImplementation implements BusInterface {
                 for (Bus bus : buses) {
                     if(bus.getCurrentBusLocation().equals(bus.getRoutes().getSourceCity())){
                         bus.setCurrentBusLocation(bus.getRoutes().getDestinationCity());
+
+
                     }else if(bus.getCurrentBusLocation().equals(bus.getRoutes().getDestinationCity())){
                         bus.setCurrentBusLocation(bus.getRoutes().getSourceCity());
+
                     }
                 }
             }
