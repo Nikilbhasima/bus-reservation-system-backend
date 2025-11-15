@@ -58,4 +58,10 @@ public class BookingImplementation implements BookingInterface {
         Users user=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
         return bookingRepository.findByUser(user);
     }
+
+    @Override
+    public List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate) {
+        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
+        return bookingsList;
+    }
 }
