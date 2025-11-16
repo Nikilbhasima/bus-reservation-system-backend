@@ -112,8 +112,24 @@ public class BusImplementation implements BusInterface {
     }
 
     @Override
-    public Bus getBusById(int busId) {
+    public Bus getBusById(int busId,LocalDate date) {
         Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+
+        LocalDate today = LocalDate.now();
+        int daysDifference = (int)ChronoUnit.DAYS.between(today, date);
+
+        if(daysDifference>0) {
+            for (int i=daysDifference;i>0;i--){
+                if(bus.getCurrentBusLocation().equals(bus.getRoutes().getSourceCity())){
+                    bus.setCurrentBusLocation(bus.getRoutes().getDestinationCity());
+
+
+                }else if(bus.getCurrentBusLocation().equals(bus.getRoutes().getDestinationCity())){
+                    bus.setCurrentBusLocation(bus.getRoutes().getSourceCity());
+
+                }
+            }
+        }
         return bus;
     }
 
