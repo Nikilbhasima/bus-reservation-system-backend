@@ -15,7 +15,7 @@ public interface BusInterface {
 
     public List<Bus> findAllBuses(Authentication auth);
 
-    public Bus getBusById(int busId);
+    public Bus getBusById(int busId, LocalDate date);
 
     public List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate);
 }
