@@ -149,7 +149,6 @@ public class BusImplementation implements BusInterface {
 
         LocalDate today = LocalDate.now();
         int daysDifference = (int)ChronoUnit.DAYS.between(today, travelDate);
-        System.out.println("date difference"+daysDifference);
 
         ArrayList<Bus> finalBusList=new ArrayList<>();
 //        finding current location of bus by date
@@ -179,7 +178,7 @@ public class BusImplementation implements BusInterface {
                     finalBusList.add(bus);
                 }
             }
-            return buses;
+            return finalBusList;
         }
 
     }

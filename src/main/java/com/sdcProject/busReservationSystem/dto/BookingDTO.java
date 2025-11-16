@@ -42,6 +42,10 @@ public class BookingDTO {
 
     private String destinationCity;
 
+    // ✅ ADD THIS: No-argument constructor (required by Jackson)
+    public BookingDTO() {
+    }
+
     public BookingDTO(Bookings bookings) {
         this.bookingId = bookings.getBookingId();
         this.user = bookings.getUser();
