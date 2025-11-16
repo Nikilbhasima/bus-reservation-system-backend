@@ -45,14 +45,19 @@ public class BusController {
         return  ResponseEntity.status(HttpStatus.OK).body(busDTOs);
     }
 
-    @GetMapping("/getBusById/{id}")
-    public ResponseEntity<BusDTO> getBusById(@PathVariable("id") int busId) {
-        BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId));
+    @GetMapping("/getBusById/{id}/{date}")
+    public ResponseEntity<BusDTO> getBusById(@PathVariable("id") int busId,@PathVariable("date") LocalDate date) {
+        BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId,date));
         return ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }
 
     @GetMapping("/getBusesByRoute/{travelDate}")
-    public ResponseEntity<List<BusDTO>> getBusesByRoute(@RequestBody Routes routes,@PathVariable LocalDate travelDate) {
+    public ResponseEntity<List<BusDTO>> getBusesByRoute(    @RequestParam String sourceCity,
+                                                            @RequestParam String destinationCity,
+                                                            @PathVariable LocalDate travelDate) {
+        Routes routes=new Routes();
+        routes.setSourceCity(sourceCity);
+        routes.setDestinationCity(destinationCity);
         List<Bus> buses=busImplementation.getBusesByRoute(routes,travelDate);
         List<BusDTO> busDTOs=new ArrayList<>();
         for (Bus bus : buses) {

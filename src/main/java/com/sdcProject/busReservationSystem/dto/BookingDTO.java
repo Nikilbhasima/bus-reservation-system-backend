@@ -38,6 +38,10 @@ public class BookingDTO {
 
     private Bus busId;
 
+    private String sourceCity;
+
+    private String destinationCity;
+
     public BookingDTO(Bookings bookings) {
         this.bookingId = bookings.getBookingId();
         this.user = bookings.getUser();
@@ -49,6 +53,8 @@ public class BookingDTO {
         this.cancellationReason = bookings.getCancellationReason();
         this.seatName = bookings.getSeatName();
         this.busId = bookings.getBusId();
+        this.sourceCity = bookings.getSourceCity();
+        this.destinationCity = bookings.getDestinationCity();
 
     }
 

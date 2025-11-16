@@ -5,6 +5,7 @@ import com.sdcProject.busReservationSystem.enumFile.BusType;
 import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.modal.BusSchedules;
 import com.sdcProject.busReservationSystem.modal.Routes;
+import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +43,8 @@ public class BusDTO {
 
     private AssignStatus assignStatus;
 
+    private TravelAgency travelAgency;
+
 
 
 
@@ -59,6 +62,7 @@ public class BusDTO {
         this.routes=bus.getRoutes();
         this.busSchedules=bus.getBusSchedules();
         this.assignStatus=bus.getAssignStatus();
+        this.travelAgency=bus.getTravelAgency();
     }
 
 }
