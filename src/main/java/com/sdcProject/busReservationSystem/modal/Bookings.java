@@ -42,5 +42,9 @@ public class Bookings {
     @JoinColumn(name = "busId")
     private Bus busId;
 
+    private String sourceCity;
+
+    private String destinationCity;
+
 
 }
