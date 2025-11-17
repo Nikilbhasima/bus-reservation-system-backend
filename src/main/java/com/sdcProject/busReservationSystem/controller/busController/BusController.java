@@ -67,4 +67,10 @@ public class BusController {
         return
                 ResponseEntity.status(HttpStatus.OK).body(busDTOs);
     }
+
+    @GetMapping("/getBusById/{id}")
+    public ResponseEntity<BusDTO> getBusById(@PathVariable("id") int busId) {
+        BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId));
+        return ResponseEntity.status(HttpStatus.OK).body(busDTO);
+    }
 }

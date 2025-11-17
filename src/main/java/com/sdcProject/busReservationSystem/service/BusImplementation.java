@@ -182,4 +182,11 @@ public class BusImplementation implements BusInterface {
         }
 
     }
+
+    @Override
+    public Bus getBusById(int busId) {
+        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+
+        return bus;
+    }
 }
