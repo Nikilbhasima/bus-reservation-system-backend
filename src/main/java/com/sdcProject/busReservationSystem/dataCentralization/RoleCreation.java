@@ -11,7 +11,7 @@ import java.util.Arrays;
 @Component
 public class RoleCreation {
 
-    @Autowired
+    @Autowired  
     private RoleRepository roleRepository;
 
     @PostConstruct
