@@ -134,6 +134,13 @@ public class BusImplementation implements BusInterface {
     }
 
     @Override
+    public Bus getBusById(int busId) {
+        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+
+        return bus;
+    }
+
+    @Override
     public List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate) {
 //get list of route
         List<Routes> listOfRoutes=routesRepository.findMatchingRoutes(routes.getSourceCity(),routes.getDestinationCity());

@@ -29,6 +29,8 @@ public class Bookings {
 
     private LocalDate tripDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private BookingStatus status;
 
     private PaymentStatus paymentStatus;
