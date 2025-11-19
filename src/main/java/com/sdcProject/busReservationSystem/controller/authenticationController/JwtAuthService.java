@@ -105,7 +105,6 @@ private AuthenticationManager authenticationManager;
     public JwtAuthResponse authenticate(AuthRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmailOrMobile(), request.getPassword()));
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(request.getEmailOrMobile());
-        System.out.println("username:"+userDetails.getUsername());
 
         String token = jwtService.generateToken(userDetails);
         return new JwtAuthResponse(token);

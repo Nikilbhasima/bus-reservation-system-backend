@@ -5,5 +5,6 @@ public enum BusType {
     DELUXE,
     SOFA_SEATER,
     TOURIST,
-    SEMI_SLEEPER
+    SEMI_SLEEPER,
+    NON_AC
 }
