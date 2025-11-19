@@ -2,6 +2,7 @@ package com.sdcProject.busReservationSystem.controller.optController;
 
 import com.sdcProject.busReservationSystem.modal.OtpEntryModal;
 import com.sdcProject.busReservationSystem.modal.OtpResponseModal;
+import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.service.MailService;
 import com.sdcProject.busReservationSystem.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,19 @@ public class OtpController {
         boolean isValidated=otpService.validateOtp(email,otp);
 
         if(!isValidated){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new OtpResponseModal(false,"otp validation failed"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new OtpResponseModal(false,"otp validation failed"));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new OtpResponseModal(true,"otp successfully validated:"+otp));
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseEntity<Boolean> updatePassword(@RequestBody Users users){
+        String email=users.getEmail();
+        String password=users.getPassword();
+        if(otpService.updatePassword(email,password)){
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
     }
 }
