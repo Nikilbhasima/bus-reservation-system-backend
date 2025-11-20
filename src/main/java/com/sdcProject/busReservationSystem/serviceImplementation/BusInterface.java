@@ -17,7 +17,6 @@ public interface BusInterface {
 
     public Bus getBusById(int busId, LocalDate date);
 
-
     public Bus getBusById(int busId);
 
     public List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate);

@@ -50,6 +50,11 @@ public class BusController {
         BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId,date));
         return ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }
+    @GetMapping("/getBusById/{id}")
+    public ResponseEntity<BusDTO> getBusById(@PathVariable("id") int busId) {
+        BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId));
+        return ResponseEntity.status(HttpStatus.OK).body(busDTO);
+    }
 
     @GetMapping("/getBusesByRoute/{travelDate}")
     public ResponseEntity<List<BusDTO>> getBusesByRoute(    @RequestParam String sourceCity,
