@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
+import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.modal.Users;
@@ -39,7 +40,8 @@ public class BookingImplementation implements BookingInterface {
         bookings.setUser(users);
         bookings.setBusId(bus);
         bookings.setBookingDate(today);
-        bookings.setStatus(BookingStatus.CONFIRMED);
+        bookings.setStatus(BookingStatus.PENDING);
+        bookings.setPaymentStatus(PaymentStatus.PENDING);
 
         return bookingRepository.save(bookings);
     }

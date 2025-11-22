@@ -12,4 +12,5 @@ public class AdminQueryDto {
     private String number;
     private String category;
     private String message;
+    private String status;
 }

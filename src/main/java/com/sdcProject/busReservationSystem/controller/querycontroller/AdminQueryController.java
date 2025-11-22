@@ -25,6 +25,7 @@ public class AdminQueryController {
             dto.setNumber(query.getNumber());
             dto.setCategory(query.getCategory());
             dto.setMessage(query.getMessage());
+            dto.setStatus(query.getStatus());
             return dto;
         }).toList();
     }
@@ -33,7 +34,7 @@ public class AdminQueryController {
          Optional<Query> update = queryRepository.findById(id);
         if (update.isPresent()) {
       Query query =  update.get();
-        query.setStatus("Solved");
+        query.setStatus("SOLVED");
         queryRepository.save(query);
         return "Query marked as solved" ;
         }
