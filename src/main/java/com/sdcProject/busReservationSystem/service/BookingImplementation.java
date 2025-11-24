@@ -42,6 +42,7 @@ public class BookingImplementation implements BookingInterface {
         bookings.setBookingDate(today);
         bookings.setStatus(BookingStatus.PENDING);
         bookings.setPaymentStatus(PaymentStatus.PENDING);
+        bookings.setBoard(false);
 
         return bookingRepository.save(bookings);
     }
@@ -65,5 +66,12 @@ public class BookingImplementation implements BookingInterface {
     public List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate) {
         List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
         return bookingsList;
+    }
+
+    @Override
+    public Bookings updateBoardStatus(int bookingId) {
+        Bookings bookings=bookingRepository.findById(bookingId).orElseThrow(()->new RuntimeException("Booking not found"));
+        bookings.setBoard(true);
+        return bookingRepository.save(bookings);
     }
 }

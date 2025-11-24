@@ -50,6 +50,7 @@ public class BusController {
         BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId,date));
         return ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }
+
     @GetMapping("/getBusById/{id}")
     public ResponseEntity<BusDTO> getBusById(@PathVariable("id") int busId) {
         BusDTO busDTO=new BusDTO(busImplementation.getBusById(busId));
@@ -72,4 +73,21 @@ public class BusController {
         return
                 ResponseEntity.status(HttpStatus.OK).body(busDTOs);
     }
+
+    @PutMapping("/switchCurrentLocation")
+    public ResponseEntity<BusDTO> switchCurrentLocation(@RequestParam int busId) {
+        System.out.println("i want to switch the current location");
+        BusDTO busDTO=new BusDTO(busImplementation.changeBusLocation(busId));
+        return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
+    }
+
+
+    @PutMapping("/updateBusStatus")
+    public ResponseEntity<BusDTO> updateBusStatus(@RequestParam int busId) {
+        System.out.println("i want to update status");
+        BusDTO busDTO=new BusDTO(busImplementation.updateBusStatus(busId));
+        return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
+    }
+
+
 }

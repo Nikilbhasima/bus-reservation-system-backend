@@ -1,6 +1,9 @@
 package com.sdcProject.busReservationSystem.controller.employeeController;
 
+import com.sdcProject.busReservationSystem.dto.BookingDTO;
 import com.sdcProject.busReservationSystem.dto.EmployeeDTO;
+import com.sdcProject.busReservationSystem.dto.SendNotification;
+import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Driver;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,5 +53,22 @@ public class EmployeeController {
         EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.getDriverById(id));
 
         return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
+    }
+
+    @GetMapping("/getListofBookingsByDateAndDriver/{date}")
+    public ResponseEntity<List<BookingDTO>> getListonBookingsByDateAndDriver(Authentication authentication, @PathVariable("date") LocalDate date) {
+        List<BookingDTO> bookingDTOS=new ArrayList<>();
+        List<Bookings> bookingsList=employeeInterface.bookingsByDriverAndDate(authentication,date);
+
+        for(Bookings booking:bookingsList){
+            bookingDTOS.add(new BookingDTO(booking));
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(bookingDTOS);
+    }
+
+    @PostMapping("/sendPassengerNotification/{busId}/{bookingDate}")
+    public ResponseEntity<?> sendPassengerNotification(@PathVariable int busId, @PathVariable LocalDate bookingDate, @RequestBody SendNotification sendNotification) {
+        return ResponseEntity.status(HttpStatus.OK).body( employeeInterface.sendNotificationToPassenger(busId,bookingDate,sendNotification));
     }
 }

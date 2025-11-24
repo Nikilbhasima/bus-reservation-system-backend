@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdcProject.busReservationSystem.config.EsewaConfig;
 import com.sdcProject.busReservationSystem.dto.PaymentRequest;
 import com.sdcProject.busReservationSystem.dto.PaymentResponse;
+import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
 import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Transaction;
@@ -149,6 +150,7 @@ public class EsewaService {
 
 //i think you have to added payment type, you haven't create payment type and enum file
             bookings.setPaymentStatus(PaymentStatus.PAID);
+            bookings.setStatus(BookingStatus.CONFIRMED);
             bookingRepository.save(bookings);
 
             // Build correct verification URL

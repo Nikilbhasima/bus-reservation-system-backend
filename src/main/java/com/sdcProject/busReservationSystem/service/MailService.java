@@ -1,11 +1,15 @@
 package com.sdcProject.busReservationSystem.service;
 
+import com.sdcProject.busReservationSystem.dto.SendNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
+
+import java.util.List;
+
 @Service
 public class MailService {
 
@@ -48,5 +52,24 @@ public class MailService {
         }
 
 
+    }
+
+
+    public boolean sendNotification(List<String> email, SendNotification sendNotification) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            for (String emailTo : email) {
+                helper.setTo(emailTo);
+                helper.setSubject("Notification!!!");
+                helper.setText(sendNotification.getMessage(), true);
+                mailSender.send(message);
+            }
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

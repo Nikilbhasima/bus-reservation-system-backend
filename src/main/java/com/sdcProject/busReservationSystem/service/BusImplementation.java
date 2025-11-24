@@ -151,8 +151,15 @@ public class BusImplementation implements BusInterface {
         ArrayList<Bus> buses=new ArrayList<Bus>();
         for (Routes route : listOfRoutes) {
             List<Bus> buses1=busRepository.findByRoutes(route);
-            buses.addAll(buses1);
+            for (Bus bus : buses1) {
+                if (bus.isActive()){
+                    buses.add(bus);
+                }
+            }
+//            buses.addAll(buses1);
         }
+
+
 
         LocalDate today = LocalDate.now();
         int daysDifference = (int)ChronoUnit.DAYS.between(today, travelDate);
@@ -186,6 +193,35 @@ public class BusImplementation implements BusInterface {
                 }
             }
             return finalBusList;
+        }
+
+    }
+
+    @Override
+    public Bus changeBusLocation(int busId) {
+        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+        String currentBusLocation=bus.getCurrentBusLocation();
+
+        if(currentBusLocation.equals(bus.getRoutes().getSourceCity())){
+            bus.setCurrentBusLocation(bus.getRoutes().getDestinationCity());
+            busRepository.save(bus);
+            return bus;
+        }else{
+            bus.setCurrentBusLocation(bus.getRoutes().getSourceCity());
+            busRepository.save(bus);
+            return bus;
+        }
+    }
+
+    @Override
+    public Bus updateBusStatus(int busId) {
+        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+        if (bus.isActive()){
+            bus.setActive(false);
+            return busRepository.save(bus);
+        }else{
+            bus.setActive(true);
+          return   busRepository.save(bus);
         }
 
     }
