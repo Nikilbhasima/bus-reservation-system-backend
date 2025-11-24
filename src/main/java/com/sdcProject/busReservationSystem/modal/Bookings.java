@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -47,6 +46,9 @@ public class Bookings {
     private String sourceCity;
 
     private String destinationCity;
+
+
+    private boolean isBoard;
 
 
 }

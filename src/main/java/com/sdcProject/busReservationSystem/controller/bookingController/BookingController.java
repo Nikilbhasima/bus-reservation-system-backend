@@ -55,4 +55,12 @@ public class BookingController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(bookingsDTO);
     }
+
+
+//    update booking status
+    @PutMapping("/updateBoardStatus/{bookingId}")
+    public ResponseEntity<BookingDTO> updateBoardStatus(@PathVariable int bookingId) {
+        BookingDTO bookingDTO=new BookingDTO(bookingImplementation.updateBoardStatus(bookingId));
+        return ResponseEntity.status(HttpStatus.OK).body(bookingDTO);
+    }
 }

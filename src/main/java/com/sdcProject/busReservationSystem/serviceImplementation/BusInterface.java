@@ -20,4 +20,8 @@ public interface BusInterface {
     public Bus getBusById(int busId);
 
     public List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate);
+
+    public Bus changeBusLocation(int busId);
+
+    public Bus updateBusStatus(int busId);
 }

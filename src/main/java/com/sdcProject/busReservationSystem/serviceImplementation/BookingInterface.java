@@ -16,4 +16,6 @@ public interface BookingInterface {
     public List<Bookings> getUserBookings(Authentication auth);
 
     public List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate);
+
+    public Bookings updateBoardStatus(int bookingId);
 }

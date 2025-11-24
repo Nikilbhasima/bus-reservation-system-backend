@@ -1,8 +1,12 @@
 package com.sdcProject.busReservationSystem.serviceImplementation;
 
+import com.sdcProject.busReservationSystem.dto.SendNotification;
+import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Driver;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeInterface {
@@ -14,4 +18,8 @@ public interface EmployeeInterface {
     public List<Driver> getDriversByAgency(Authentication auth);
 
     public Driver getDriverById(int driverId);
+
+    public List<Bookings> bookingsByDriverAndDate(Authentication authentication, LocalDate date);
+
+    public boolean sendNotificationToPassenger(int busId, LocalDate bookingDate, SendNotification sendNotification);
 }

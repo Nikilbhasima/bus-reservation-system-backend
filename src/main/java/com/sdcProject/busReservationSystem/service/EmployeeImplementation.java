@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.service;
 
+import com.sdcProject.busReservationSystem.dto.SendNotification;
 import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.*;
@@ -9,8 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeImplementation implements EmployeeInterface {
@@ -32,6 +35,12 @@ public class EmployeeImplementation implements EmployeeInterface {
 
     @Autowired
     private BusRepository busRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private MailService mailService;
 
     @Override
     public Driver addDriverDetails(Driver driver, Authentication authentication) {
@@ -105,5 +114,27 @@ public class EmployeeImplementation implements EmployeeInterface {
         Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
 
         return driver;
+    }
+
+    @Override
+    public List<Bookings> bookingsByDriverAndDate(Authentication authentication, LocalDate date) {
+        Driver driver=driverRepository.findByDriverEmail(authentication.getName());
+        System.out.println(driver.getDriver_email());
+        System.out.println("date:"+date);
+
+        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(driver.getBus().getBusId(), date);
+
+        return bookingsList;
+    }
+
+//    send notification to unboard passenger
+    public boolean sendNotificationToPassenger(int busId, LocalDate bookingDate, SendNotification sendNotification) {
+        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
+        List<String> listOfEmails = bookingsList.stream()
+                .filter(data->!data.isBoard())
+                .map(b -> b.getUser().getEmail())
+                .toList();
+
+        return mailService.sendNotification(listOfEmails,sendNotification);
     }
 }

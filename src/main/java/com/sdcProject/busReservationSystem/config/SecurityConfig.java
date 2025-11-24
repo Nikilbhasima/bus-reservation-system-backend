@@ -62,7 +62,9 @@ public class SecurityConfig {
                 .securityMatcher("/api/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/**","/api/otp/**").permitAll()
+                        .requestMatchers("/api/auth/**","/api/otp/**","/api/bus/getBusesByRoute/**",
+                                "/api/bus/getBusById/**",
+                                "/api/busBooking/getAllBookingsByBusIdAndDate/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
