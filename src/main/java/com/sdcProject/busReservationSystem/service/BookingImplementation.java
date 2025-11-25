@@ -4,31 +4,30 @@ import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
 import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Bus;
+import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.repository.BookingRepository;
 import com.sdcProject.busReservationSystem.repository.BusRepository;
+import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.BookingInterface;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class BookingImplementation implements BookingInterface {
-
-    @Autowired
     private BookingRepository bookingRepository;
-
-    @Autowired
     private BusRepository busRepository;
-
-    @Autowired
     private UserRepository userRepository;
+    private TravelAgencyRepository travelAgencyRepository;
 
-    @Override
     public Bookings bookSeats(Bookings bookings, Authentication auth, int busId) {
 
         Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
@@ -73,5 +72,28 @@ public class BookingImplementation implements BookingInterface {
         Bookings bookings=bookingRepository.findById(bookingId).orElseThrow(()->new RuntimeException("Booking not found"));
         bookings.setBoard(true);
         return bookingRepository.save(bookings);
+    }
+
+    @Override
+    public List<Bookings> getBookingsForAgency(Authentication auth,LocalDate bookingDate,int busId) {
+        Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
+        TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
+        List<Bus> buses=busRepository.findByTravelAgency(travelAgency);
+//        Adding list of bookings
+        List<Bookings> bookingsList=new ArrayList<>();
+
+//        find bookings of each bus
+        if(busId==0) {
+            for (Bus bus : buses) {
+                List<Bookings> bookings=bookingRepository.findByBookingDate(bus,bookingDate);
+                bookingsList.addAll(bookings);
+            }
+        }else {
+            Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+                List<Bookings> bookings=bookingRepository.findByBookingDate(bus,bookingDate);
+                bookingsList.addAll(bookings);
+        }
+
+        return bookingsList;
     }
 }
