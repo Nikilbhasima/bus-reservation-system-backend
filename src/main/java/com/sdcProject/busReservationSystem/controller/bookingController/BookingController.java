@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/busBooking")
@@ -56,11 +57,21 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(bookingsDTO);
     }
 
-
 //    update booking status
     @PutMapping("/updateBoardStatus/{bookingId}")
     public ResponseEntity<BookingDTO> updateBoardStatus(@PathVariable int bookingId) {
         BookingDTO bookingDTO=new BookingDTO(bookingImplementation.updateBoardStatus(bookingId));
         return ResponseEntity.status(HttpStatus.OK).body(bookingDTO);
     }
+
+    @GetMapping("/getBookingsForAgency")
+    public ResponseEntity<List<BookingDTO>> getBookingsForAgency(Authentication auth,@RequestParam LocalDate bookingDate,@RequestParam int busId) {
+        List<BookingDTO> bookingDTOList = bookingImplementation.getBookingsForAgency(auth,bookingDate,busId)
+                .stream()
+                .map(BookingDTO::new) // convert each Booking to BookingDTO
+                .collect(Collectors .toList());
+
+        return ResponseEntity.ok(bookingDTOList);
+    }
+
 }

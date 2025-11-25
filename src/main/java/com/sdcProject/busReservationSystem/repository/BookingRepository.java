@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.repository;
 
 import com.sdcProject.busReservationSystem.modal.Bookings;
+import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.modal.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,9 @@ public interface BookingRepository extends JpaRepository<Bookings,Integer> {
     List<Bookings> findBookingsByBusIdAndTripDate(@Param("busId") int busId,
                                                   @Param("tripDate") LocalDate tripDate);
 
+    @Query("SELECT b from Bookings  b WHERE b.busId=:bus AND b.bookingDate=:bookingDate")
+    List<Bookings> findByBookingDate(Bus bus,LocalDate bookingDate);
+
+//    @Query("SELECT b from Bookings b where")
+//    List<Bookings> findByBusIdAndDate(Bus bus, LocalDate bookingDate, int busId);
 }
