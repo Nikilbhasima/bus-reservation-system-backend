@@ -71,4 +71,24 @@ public class EmployeeController {
     public ResponseEntity<?> sendPassengerNotification(@PathVariable int busId, @PathVariable LocalDate bookingDate, @RequestBody SendNotification sendNotification) {
         return ResponseEntity.status(HttpStatus.OK).body( employeeInterface.sendNotificationToPassenger(busId,bookingDate,sendNotification));
     }
+
+    @GetMapping("/getEmployeeData")
+    public ResponseEntity<EmployeeDTO> getEmployeeData(Authentication authentication) {
+
+        EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.getDriverData(authentication));
+
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
+    }
+
+    @PutMapping("/unAssignEmployeeBus/{employeeId}")
+    public ResponseEntity<EmployeeDTO> unAssignEmployeeBus(@PathVariable int employeeId) {
+        EmployeeDTO employeeDTO=new EmployeeDTO(employeeInterface.unassignDriver(employeeId));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
+    }
+
+    @PutMapping("/assignDriverBus")
+    public ResponseEntity<EmployeeDTO> assignDriverBus(@RequestParam int busId,@RequestParam int driverId) {
+        EmployeeDTO  employeeDTO=new EmployeeDTO(employeeInterface.assignDriver(driverId,busId));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
+    }
 }
