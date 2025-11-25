@@ -42,6 +42,8 @@ public class EmployeeImplementation implements EmployeeInterface {
     @Autowired
     private MailService mailService;
 
+
+
     @Override
     public Driver addDriverDetails(Driver driver, Authentication authentication) {
         Users user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -136,5 +138,33 @@ public class EmployeeImplementation implements EmployeeInterface {
                 .toList();
 
         return mailService.sendNotification(listOfEmails,sendNotification);
+    }
+
+    @Override
+    public Driver getDriverData(Authentication authentication) {
+        return driverRepository.findByDriverEmail(authentication.getName());
+    }
+
+    @Override
+    public Driver unassignDriver(int driverId) {
+        Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
+        Bus bus=driver.getBus();
+        bus.setAssignStatus(AssignStatus.UNASSIGN);
+        driver.setBus(null);
+        busRepository.save(bus);
+        return driverRepository.save(driver);
+    }
+
+    @Override
+    public Driver assignDriver(int driverId, int busId) {
+        System.out.println("driverId:"+driverId);
+        System.out.println("busId:"+busId);
+        Bus bus=busRepository.findById(busId).orElseThrow(() -> new RuntimeException("Bus not found"));
+        Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
+        driver.setBus(bus);
+        driver.setDriver_email(driver.getDriver_email());
+        bus.setAssignStatus(AssignStatus.ASSIGN);
+        busRepository.save(bus);
+        return driverRepository.save(driver);
     }
 }

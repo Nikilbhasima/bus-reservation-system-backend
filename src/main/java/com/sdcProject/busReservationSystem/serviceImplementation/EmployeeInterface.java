@@ -22,4 +22,9 @@ public interface EmployeeInterface {
     public List<Bookings> bookingsByDriverAndDate(Authentication authentication, LocalDate date);
 
     public boolean sendNotificationToPassenger(int busId, LocalDate bookingDate, SendNotification sendNotification);
+
+    public Driver getDriverData(Authentication authentication);
+
+    public Driver unassignDriver(int driverId);
+    public Driver assignDriver(int driverId, int busId);
 }
