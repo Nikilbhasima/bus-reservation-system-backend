@@ -1,8 +1,8 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.dto.SendNotification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import lombok.AllArgsConstructor;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import jakarta.mail.internet.MimeMessage;
@@ -11,9 +11,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class MailService {
 
-    @Autowired
+
     private JavaMailSender mailSender;
 
     public boolean sendOtp(String email, String otp) {

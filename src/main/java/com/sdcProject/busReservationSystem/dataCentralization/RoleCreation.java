@@ -3,15 +3,16 @@ package com.sdcProject.busReservationSystem.dataCentralization;
 import com.sdcProject.busReservationSystem.modal.Roles;
 import com.sdcProject.busReservationSystem.repository.RoleRepository;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component
+@Slf4j
+@AllArgsConstructor
 public class RoleCreation {
-
-    @Autowired  
     private RoleRepository roleRepository;
 
     @PostConstruct
@@ -30,9 +31,9 @@ public class RoleCreation {
             busRole.setRole("ROLE_BUS");
 
             roleRepository.saveAll(Arrays.asList(adminRole, ownerRole, userRole, busRole));
-            System.out.println("Default roles inserted successfully!");
+            log.info("Default roles inserted successfully!");
         } else {
-            System.out.println("Roles already exist in database");
+            log.info("Roles already exist in database");
         }
     }
 

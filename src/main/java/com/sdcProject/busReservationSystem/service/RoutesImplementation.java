@@ -7,24 +7,17 @@ import com.sdcProject.busReservationSystem.repository.RoutesRepository;
 import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.RoutesInterface;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class RoutesImplementation implements RoutesInterface {
 
-    @Autowired
     private RoutesRepository routesRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private TravelAgencyRepository travelAgencyRepository;
 
     @Override
@@ -60,13 +53,11 @@ public class RoutesImplementation implements RoutesInterface {
     public List<Routes> getAllRoutes(Authentication auth) {
         Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
         TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
-        List<Routes> routes=routesRepository.findByTravelAgency(travelAgency);
-        return routes;
+        return routesRepository.findByTravelAgency(travelAgency);
     }
 
     @Override
     public Routes getRouteById(int routeId) {
-        Routes routes=routesRepository.findById(routeId).orElseThrow(()->new RuntimeException("Route not found"));
-        return routes;
+        return routesRepository.findById(routeId).orElseThrow(()->new RuntimeException("Route not found"));
     }
 }

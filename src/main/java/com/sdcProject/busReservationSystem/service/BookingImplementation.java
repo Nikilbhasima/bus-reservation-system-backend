@@ -12,11 +12,13 @@ import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.BookingInterface;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +65,7 @@ public class BookingImplementation implements BookingInterface {
 
     @Override
     public List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate) {
-        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
-        return bookingsList;
+        return bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
     }
 
     @Override
@@ -95,5 +96,55 @@ public class BookingImplementation implements BookingInterface {
         }
 
         return bookingsList;
+    }
+
+    @Override
+    public Bookings cancelBooking(int bookingId) {
+        Bookings bookings = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        // Trip date and time
+        LocalDate tripDate = bookings.getBookingDate();
+        LocalTime departureTime = bookings.getBusId()
+                .getBusSchedules()
+                .getDepartureTime();
+
+        // Current date and time
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        // Combine date + time into LocalDateTime
+        LocalDateTime tripDateTime = LocalDateTime.of(tripDate, departureTime);
+        LocalDateTime currentDateTime = LocalDateTime.of(currentDate, currentTime);
+
+        // Calculate difference in hours
+        long hoursDifference = Duration.between(currentDateTime, tripDateTime).toHours();
+
+        System.out.println("Hours difference: " + hoursDifference);
+
+
+        if (hoursDifference > 48) {
+            bookings.setStatus(BookingStatus.CANCELLED);
+            bookings.setCancellationReason(bookings.getCancellationReason());
+            bookings.setFineInPercentage(0);
+
+        }
+        else if (hoursDifference >= 24 && hoursDifference <= 48) {
+            bookings.setStatus(BookingStatus.CANCELLED);
+            bookings.setCancellationReason(bookings.getCancellationReason());
+            bookings.setFineInPercentage(25);
+        }
+        else if (hoursDifference >= 14 && hoursDifference < 24) {
+            bookings.setStatus(BookingStatus.CANCELLED);
+            bookings.setCancellationReason(bookings.getCancellationReason());
+            bookings.setFineInPercentage(50);
+        }
+        else {
+            bookings.setStatus(BookingStatus.CANCELLED);
+            bookings.setCancellationReason(bookings.getCancellationReason());
+            bookings.setFineInPercentage(100);
+        }
+
+        return bookingRepository.save(bookings);
     }
 }

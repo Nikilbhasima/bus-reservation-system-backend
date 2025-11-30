@@ -3,15 +3,16 @@ package com.sdcProject.busReservationSystem.controller.querycontroller;
 import com.sdcProject.busReservationSystem.dto.UserQueryDto;
 import com.sdcProject.busReservationSystem.modal.Query;
 import com.sdcProject.busReservationSystem.repository.QueryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth/user/query")
 public class UserQueryController {
-    @Autowired
+
     QueryRepository queryRepository;
     // Add a new query
     @PostMapping("/add")

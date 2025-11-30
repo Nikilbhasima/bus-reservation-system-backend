@@ -3,17 +3,17 @@ package com.sdcProject.busReservationSystem.controller.travelAgencyController;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import com.sdcProject.busReservationSystem.service.TravelAgencyImplementation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-    @RequestMapping("api/travelAgency")
+@RequestMapping("api/travelAgency")
+@AllArgsConstructor
 public class TravelAgencyController {
 
-    @Autowired
     private TravelAgencyImplementation travelAgencyImplementation;
 
     @PostMapping("/addTravelAgencyDetails")

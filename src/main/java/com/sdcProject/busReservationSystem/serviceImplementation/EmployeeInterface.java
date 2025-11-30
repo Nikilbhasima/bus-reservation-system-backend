@@ -4,8 +4,6 @@ import com.sdcProject.busReservationSystem.dto.SendNotification;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Driver;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.time.LocalDate;
 import java.util.List;
 

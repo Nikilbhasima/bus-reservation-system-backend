@@ -3,7 +3,6 @@ package com.sdcProject.busReservationSystem.service;
 import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.repository.BusRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

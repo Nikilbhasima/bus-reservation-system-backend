@@ -2,7 +2,7 @@ package com.sdcProject.busReservationSystem.controller.ticketController;
 
 import com.sdcProject.busReservationSystem.dto.BookingDTO;
 import com.sdcProject.busReservationSystem.service.PdfTicketService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,9 +13,10 @@ import java.io.ByteArrayInputStream;
 
 @RestController
 @RequestMapping("api/ticketBooking")
+@AllArgsConstructor
 public class TicketController {
 
-    @Autowired
+
     private PdfTicketService pdfTicketService;
 
 

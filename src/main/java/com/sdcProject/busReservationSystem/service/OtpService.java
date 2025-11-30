@@ -4,21 +4,19 @@ import com.sdcProject.busReservationSystem.modal.OtpEntryModal;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.utils.OptUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@AllArgsConstructor
 public class OtpService {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
+    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
     private final Map<String, OtpEntryModal> otpCache = new ConcurrentHashMap<>();
@@ -32,9 +30,6 @@ public class OtpService {
 
 
     public boolean validateOtp(String email, String otp) {
-        System.out.println("otp:"+otp+" email:"+email);
-        System.out.println("showing data of map");
-
 
         OtpEntryModal entry = otpCache.get(email);
         if (entry == null) return false;
