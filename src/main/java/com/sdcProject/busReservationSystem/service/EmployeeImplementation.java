@@ -116,6 +116,17 @@ public class EmployeeImplementation implements EmployeeInterface {
     }
 
     @Override
+    public boolean boardingNotification(int busId, LocalDate bookingDate) {
+        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
+        List<String> listOfEmails = bookingsList.stream()
+                .filter(data->!data.getStatus().equals("CANCELLED"))
+                .map(b -> b.getUser().getEmail())
+                .toList();
+        mailService.boardingNotification(listOfEmails);
+        return true;
+    }
+
+    @Override
     public Driver getDriverData(Authentication authentication) {
         return driverRepository.findByDriverEmail(authentication.getName());
     }

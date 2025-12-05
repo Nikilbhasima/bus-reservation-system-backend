@@ -1,12 +1,11 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.dto.SendNotification;
-import lombok.AllArgsConstructor;
-
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
 import jakarta.mail.internet.MimeMessage;
+import lombok.AllArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -68,9 +67,39 @@ public class MailService {
                 mailSender.send(message);
             }
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean boardingNotification(List<String> email) {
+        try {
+            for (String emailTo : email) {
+
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+                helper.setTo(emailTo);
+                helper.setSubject("🚌 Bus Boarding Notification");
+                helper.setText(
+                        "<h3>Dear Passenger,</h3>" +
+                                "<p>Your bus is now <strong>ready for boarding</strong>.</p>" +
+                                "<p>Please proceed to the designated platform on time.</p>" +
+                                "<br>" +
+                                "<p>Safe travels!<br/>Bus Reservation System</p>",
+                        true
+                );
+
+                mailSender.send(message);
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }

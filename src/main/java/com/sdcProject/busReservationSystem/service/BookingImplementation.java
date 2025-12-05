@@ -99,12 +99,12 @@ public class BookingImplementation implements BookingInterface {
     }
 
     @Override
-    public Bookings cancelBooking(int bookingId) {
+    public Bookings cancelBooking(int bookingId,String reason) {
         Bookings bookings = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         // Trip date and time
-        LocalDate tripDate = bookings.getBookingDate();
+        LocalDate tripDate = bookings.getTripDate();
         LocalTime departureTime = bookings.getBusId()
                 .getBusSchedules()
                 .getDepartureTime();
@@ -118,10 +118,10 @@ public class BookingImplementation implements BookingInterface {
         LocalDateTime currentDateTime = LocalDateTime.of(currentDate, currentTime);
 
         // Calculate difference in hours
-        long hoursDifference = Duration.between(currentDateTime, tripDateTime).toHours();
-
-        System.out.println("Hours difference: " + hoursDifference);
-
+        long hoursDifference = Math.abs(Duration.between(currentDateTime, tripDateTime).toHours());
+        System.out.println("cancellation duration: "+hoursDifference);
+        System.out.println("currrent date:"+currentDateTime);
+        System.out.println("trip time:"+tripDateTime);
 
         if (hoursDifference > 48) {
             bookings.setStatus(BookingStatus.CANCELLED);
@@ -144,6 +144,8 @@ public class BookingImplementation implements BookingInterface {
             bookings.setCancellationReason(bookings.getCancellationReason());
             bookings.setFineInPercentage(100);
         }
+        bookings.setCancellationReason(reason);
+        bookings.setPaymentStatus(PaymentStatus.REFUNDED);
 
         return bookingRepository.save(bookings);
     }

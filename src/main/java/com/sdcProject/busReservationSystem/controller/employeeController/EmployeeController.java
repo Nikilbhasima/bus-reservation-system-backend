@@ -91,4 +91,10 @@ public class EmployeeController {
         EmployeeDTO  employeeDTO=new EmployeeDTO(employeeInterface.assignDriver(driverId,busId));
         return ResponseEntity.status(HttpStatus.OK).body(employeeDTO);
     }
+
+    @GetMapping("/sendPassengerNotification/{busId}/{bookingDate}")
+    public ResponseEntity<Boolean> boardingNotification(@PathVariable int busId, @PathVariable LocalDate bookingDate){
+        employeeInterface.boardingNotification(busId,bookingDate);
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
 }
