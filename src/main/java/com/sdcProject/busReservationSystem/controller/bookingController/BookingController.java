@@ -64,7 +64,9 @@ public class BookingController {
         for(Bookings booking:bookings){
             bookingsDTO.add(new BookingDTO(booking));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(bookingsDTO);
+        return ResponseEntity.status(HttpStatus.OK).body( bookingsDTO.stream()
+                .sorted((a, b) -> b.getTripDate().compareTo(a.getTripDate())) // DESC
+                .toList());
     }
 
 //    update booking status
