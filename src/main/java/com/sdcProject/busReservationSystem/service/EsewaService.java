@@ -12,6 +12,7 @@ import com.sdcProject.busReservationSystem.modal.Transaction;
 import com.sdcProject.busReservationSystem.repository.BookingRepository;
 import com.sdcProject.busReservationSystem.repository.TransactionRespository;
 import com.sdcProject.busReservationSystem.utils.HmacSignatureUtil;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -29,23 +30,13 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class EsewaService {
 
-    @Autowired
     private TransactionRespository transactionRespository;
-
-    @Autowired
-    private BookingRepository BookingRepository;
-
-    @Autowired
     private  EsewaConfig esewaConfig;
-
-    @Autowired
     private HmacSignatureUtil hmacSignatureUtil;
-
-    @Autowired
     private CloseableHttpClient httpClient = HttpClients.createDefault();
-    @Autowired
     private BookingRepository bookingRepository;
 
     public PaymentResponse initiatePayment(PaymentRequest request, int bookingId){

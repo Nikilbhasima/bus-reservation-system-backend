@@ -6,19 +6,17 @@ import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.TravelAgencyInterface;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class TravelAgencyImplementation implements TravelAgencyInterface {
 
-    @Autowired
     private TravelAgencyRepository travelAgencyRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -34,7 +32,6 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
 
     @Override
     public TravelAgencyDTO editTravelAgency(TravelAgency travelAgency, Authentication authentication) {
-        System.out.println("i want to edit travel agency");
         Users user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -47,14 +44,12 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
         travelAgency1.setRegistration_number(travelAgency.getRegistration_number());
         travelAgency1.setAddress(travelAgency.getAddress());
         travelAgency1.setAgency_logo(travelAgency.getAgency_logo());
-        TravelAgencyDTO travelAgencyDTO=new TravelAgencyDTO(travelAgencyRepository.save(travelAgency1));
-        return travelAgencyDTO;
+        return new TravelAgencyDTO(travelAgencyRepository.save(travelAgency1));
     }
 
     @Override
     public TravelAgency getTravelAgency(Authentication authentication) {
         Users user=userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
-        TravelAgency travelAgency=travelAgencyRepository.findByUser(user);
-        return travelAgency;
+        return travelAgencyRepository.findByUser(user);
     }
 }

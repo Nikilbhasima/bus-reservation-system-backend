@@ -5,41 +5,25 @@ import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EmployeeImplementation implements EmployeeInterface {
 
-    @Autowired
     private DriverRepository driverRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private TravelAgencyRepository travelAgencyRepository;
-
-    @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private BusRepository busRepository;
-
-    @Autowired
     private BookingRepository bookingRepository;
-
-    @Autowired
     private MailService mailService;
 
 
@@ -73,7 +57,6 @@ public class EmployeeImplementation implements EmployeeInterface {
 
     @Override
     public Driver editDriver(Driver driver, int driverId) {
-        System.out.println("Driver edit");
         Driver driver1=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
 
         driver1.setDriver_name(driver.getDriver_name());
@@ -107,26 +90,18 @@ public class EmployeeImplementation implements EmployeeInterface {
     public List<Driver> getDriversByAgency(Authentication auth) {
         Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
         TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
-        List<Driver> drivers=driverRepository.findByTravelAgency(travelAgency);
-        return drivers;
+        return driverRepository.findByTravelAgency(travelAgency);
     }
 
     @Override
     public Driver getDriverById(int driverId) {
-        Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
-
-        return driver;
+               return driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
     }
 
     @Override
     public List<Bookings> bookingsByDriverAndDate(Authentication authentication, LocalDate date) {
         Driver driver=driverRepository.findByDriverEmail(authentication.getName());
-        System.out.println(driver.getDriver_email());
-        System.out.println("date:"+date);
-
-        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(driver.getBus().getBusId(), date);
-
-        return bookingsList;
+        return bookingRepository.findBookingsByBusIdAndTripDate(driver.getBus().getBusId(), date);
     }
 
 //    send notification to unboard passenger
@@ -136,8 +111,19 @@ public class EmployeeImplementation implements EmployeeInterface {
                 .filter(data->!data.isBoard())
                 .map(b -> b.getUser().getEmail())
                 .toList();
+        mailService.sendNotification(listOfEmails,sendNotification);
+        return true;
+    }
 
-        return mailService.sendNotification(listOfEmails,sendNotification);
+    @Override
+    public boolean boardingNotification(int busId, LocalDate bookingDate) {
+        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
+        List<String> listOfEmails = bookingsList.stream()
+                .filter(data->!data.getStatus().equals("CANCELLED"))
+                .map(b -> b.getUser().getEmail())
+                .toList();
+        mailService.boardingNotification(listOfEmails);
+        return true;
     }
 
     @Override
@@ -157,8 +143,6 @@ public class EmployeeImplementation implements EmployeeInterface {
 
     @Override
     public Driver assignDriver(int driverId, int busId) {
-        System.out.println("driverId:"+driverId);
-        System.out.println("busId:"+busId);
         Bus bus=busRepository.findById(busId).orElseThrow(() -> new RuntimeException("Bus not found"));
         Driver driver=driverRepository.findById(driverId).orElseThrow(() -> new RuntimeException("Driver not found"));
         driver.setBus(bus);

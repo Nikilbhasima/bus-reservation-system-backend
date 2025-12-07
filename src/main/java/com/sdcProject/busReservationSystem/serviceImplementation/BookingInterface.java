@@ -20,4 +20,6 @@ public interface BookingInterface {
     public Bookings updateBoardStatus(int bookingId);
 
     public List<Bookings> getBookingsForAgency(Authentication auth,LocalDate bookingDate,int busId);
+
+    public Bookings cancelBooking(int bookingId,String reason);
 }

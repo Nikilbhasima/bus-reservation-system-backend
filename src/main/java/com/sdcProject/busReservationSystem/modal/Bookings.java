@@ -1,5 +1,4 @@
 package com.sdcProject.busReservationSystem.modal;
-
 import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
 import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
 import jakarta.persistence.*;
@@ -49,6 +48,8 @@ public class Bookings {
 
 
     private boolean isBoard;
+
+    private int fineInPercentage;
 
 
 }

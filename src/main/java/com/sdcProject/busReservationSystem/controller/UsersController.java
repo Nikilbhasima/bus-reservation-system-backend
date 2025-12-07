@@ -3,8 +3,7 @@ package com.sdcProject.busReservationSystem.controller;
 import com.sdcProject.busReservationSystem.dto.UserDto;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.service.UserImplementation;
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@AllArgsConstructor
 public class UsersController {
-    @Autowired
+
     private UserImplementation userImplementation;
 
     @GetMapping("/getUserById")

@@ -1,10 +1,9 @@
 package com.sdcProject.busReservationSystem.controller.querycontroller;
 
 import com.sdcProject.busReservationSystem.dto.AdminQueryDto;
-import com.sdcProject.busReservationSystem.dto.UserQueryDto;
 import com.sdcProject.busReservationSystem.modal.Query;
 import com.sdcProject.busReservationSystem.repository.QueryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,8 +11,8 @@ import java.util.Optional;
     
 @RestController
 @RequestMapping("/api/auth/admin/query")
+@RequiredArgsConstructor
 public class AdminQueryController {
-    @Autowired
     QueryRepository queryRepository;
     @GetMapping("/all")
     public List<AdminQueryDto> getAllQueriesForAdmin() {
@@ -29,6 +28,7 @@ public class AdminQueryController {
             return dto;
         }).toList();
     }
+
     @PutMapping("/update/{id}")
     public String updateQuery(@PathVariable int id){
          Optional<Query> update = queryRepository.findById(id);

@@ -1,11 +1,10 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
-import com.sdcProject.busReservationSystem.enumFile.BusType;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.BusInterface;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class BusImplementation implements BusInterface {
 
-    @Autowired
+
     private BusRepository busRepository;
-
-    @Autowired
     private TravelAgencyRepository travelAgencyRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private RoutesRepository routesRepository;
-
-    @Autowired
     private BusScheduleRespository busScheduleRepository;
 
     @Override
@@ -107,8 +99,7 @@ public class BusImplementation implements BusInterface {
     public List<Bus> findAllBuses(Authentication auth) {
         Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
         TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
-        List<Bus> buses=busRepository.findByTravelAgency(travelAgency);
-        return buses;
+        return busRepository.findByTravelAgency(travelAgency);
     }
 
     @Override
@@ -135,9 +126,7 @@ public class BusImplementation implements BusInterface {
 
     @Override
     public Bus getBusById(int busId) {
-        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
-
-        return bus;
+        return busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
     }
 
     @Override
@@ -148,7 +137,7 @@ public class BusImplementation implements BusInterface {
             throw new RuntimeException("Routes not found");
         }
 //get list of buses
-        ArrayList<Bus> buses=new ArrayList<Bus>();
+        ArrayList<Bus> buses=new ArrayList<>();
         for (Routes route : listOfRoutes) {
             List<Bus> buses1=busRepository.findByRoutes(route);
             for (Bus bus : buses1) {
@@ -156,7 +145,6 @@ public class BusImplementation implements BusInterface {
                     buses.add(bus);
                 }
             }
-//            buses.addAll(buses1);
         }
 
 

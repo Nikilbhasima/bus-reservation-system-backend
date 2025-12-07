@@ -1,24 +1,21 @@
 package com.sdcProject.busReservationSystem.controller.optController;
 
-import com.sdcProject.busReservationSystem.modal.OtpEntryModal;
 import com.sdcProject.busReservationSystem.modal.OtpResponseModal;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.service.MailService;
 import com.sdcProject.busReservationSystem.service.OtpService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/otp")
+@AllArgsConstructor
 public class OtpController {
 
-    @Autowired
-    private MailService mailService;
 
-    @Autowired
+    private MailService mailService;
     private OtpService otpService;
 
     @GetMapping("/generateOtp")
@@ -39,7 +36,6 @@ public class OtpController {
 
     @PostMapping("/validateOtp")
     public ResponseEntity<OtpResponseModal> validateOtp(@RequestParam("otp") String otp,@RequestParam("email") String email) {
-        System.out.println("otp:"+otp+" email:"+email);
         boolean isValidated=otpService.validateOtp(email,otp);
 
         if(!isValidated){

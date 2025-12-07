@@ -1,7 +1,6 @@
 package com.sdcProject.busReservationSystem.dto;
 
 
-import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
 import com.sdcProject.busReservationSystem.modal.Routes;
 import lombok.Getter;
 import lombok.Setter;

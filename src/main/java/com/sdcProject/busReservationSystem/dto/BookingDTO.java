@@ -5,7 +5,6 @@ import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.modal.Users;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +32,6 @@ public class BookingDTO {
 
     private String cancellationReason;
 
-
     private List<String> seatName;
 
     private Bus busId;
@@ -41,6 +39,11 @@ public class BookingDTO {
     private String sourceCity;
 
     private String destinationCity;
+
+    private int fineInPercentage;
+
+    private boolean isBoard;
+
 
     // ✅ ADD THIS: No-argument constructor (required by Jackson)
     public BookingDTO() {
@@ -59,7 +62,8 @@ public class BookingDTO {
         this.busId = bookings.getBusId();
         this.sourceCity = bookings.getSourceCity();
         this.destinationCity = bookings.getDestinationCity();
-
+        this.fineInPercentage = bookings.getFineInPercentage();
+        this.isBoard=bookings.isBoard();
     }
 
 }

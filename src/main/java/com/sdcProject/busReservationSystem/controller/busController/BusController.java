@@ -4,21 +4,20 @@ import com.sdcProject.busReservationSystem.dto.BusDTO;
 import com.sdcProject.busReservationSystem.modal.Bus;
 import com.sdcProject.busReservationSystem.modal.Routes;
 import com.sdcProject.busReservationSystem.service.BusImplementation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/bus")
+@AllArgsConstructor
 public class BusController {
 
-    @Autowired
     private BusImplementation busImplementation;
 
     @PostMapping("/addBus")
@@ -29,7 +28,6 @@ public class BusController {
 
     @PostMapping("/editBus/{busId}")
     public ResponseEntity<BusDTO> editBus(@RequestBody Bus bus, @PathVariable int busId ) {
-        System.out.println("i want to edit the bus");
         BusDTO busDTO=new BusDTO(busImplementation.editBus(bus, busId));
         return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }
@@ -76,7 +74,6 @@ public class BusController {
 
     @PutMapping("/switchCurrentLocation")
     public ResponseEntity<BusDTO> switchCurrentLocation(@RequestParam int busId) {
-        System.out.println("i want to switch the current location");
         BusDTO busDTO=new BusDTO(busImplementation.changeBusLocation(busId));
         return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }
@@ -84,7 +81,6 @@ public class BusController {
 
     @PutMapping("/updateBusStatus")
     public ResponseEntity<BusDTO> updateBusStatus(@RequestParam int busId) {
-        System.out.println("i want to update status");
         BusDTO busDTO=new BusDTO(busImplementation.updateBusStatus(busId));
         return  ResponseEntity.status(HttpStatus.OK).body(busDTO);
     }

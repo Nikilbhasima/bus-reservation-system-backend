@@ -1,10 +1,8 @@
 package com.sdcProject.busReservationSystem.dto;
 
 import com.sdcProject.busReservationSystem.modal.Users;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter

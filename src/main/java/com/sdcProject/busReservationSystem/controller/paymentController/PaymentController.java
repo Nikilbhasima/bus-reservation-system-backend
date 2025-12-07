@@ -3,7 +3,7 @@ package com.sdcProject.busReservationSystem.controller.paymentController;
 import com.sdcProject.busReservationSystem.dto.PaymentRequest;
 import com.sdcProject.busReservationSystem.dto.PaymentResponse;
 import com.sdcProject.busReservationSystem.service.EsewaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("api/payment")
+@AllArgsConstructor
 public class PaymentController {
 
-    @Autowired
+
     private EsewaService esewaService;
 
     @PostMapping("/initiate/{bookingId}")

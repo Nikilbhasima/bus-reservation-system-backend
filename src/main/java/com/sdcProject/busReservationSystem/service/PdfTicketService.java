@@ -32,7 +32,6 @@ public class PdfTicketService {
     private static final Color SUCCESS_COLOR = new DeviceRgb(34, 197, 94); // Green
     private static final Color GRAY_LIGHT = new DeviceRgb(243, 244, 246);
     private static final Color GRAY_DARK = new DeviceRgb(107, 114, 128);
-    private static final Color BLACK = ColorConstants.BLACK;
 
     public ByteArrayInputStream generateTicketPdf(BookingDTO bookingDTO) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
