@@ -32,7 +32,6 @@ public class BookingDTO {
 
     private String cancellationReason;
 
-
     private List<String> seatName;
 
     private Bus busId;
@@ -42,6 +41,8 @@ public class BookingDTO {
     private String destinationCity;
 
     private int fineInPercentage;
+
+    private boolean isBoard;
 
 
     // ✅ ADD THIS: No-argument constructor (required by Jackson)
@@ -62,7 +63,7 @@ public class BookingDTO {
         this.sourceCity = bookings.getSourceCity();
         this.destinationCity = bookings.getDestinationCity();
         this.fineInPercentage = bookings.getFineInPercentage();
-
+        this.isBoard=bookings.isBoard();
     }
 
 }
