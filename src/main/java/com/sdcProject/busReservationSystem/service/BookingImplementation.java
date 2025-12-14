@@ -44,6 +44,7 @@ public class BookingImplementation implements BookingInterface {
         bookings.setStatus(BookingStatus.PENDING);
         bookings.setPaymentStatus(PaymentStatus.PENDING);
         bookings.setBoard(false);
+        bookings.setJourneyStarted(false);
 
         return bookingRepository.save(bookings);
     }

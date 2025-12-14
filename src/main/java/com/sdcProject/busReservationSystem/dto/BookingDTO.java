@@ -44,6 +44,8 @@ public class BookingDTO {
 
     private boolean isBoard;
 
+    private boolean isJourneyStarted;
+
 
     // ✅ ADD THIS: No-argument constructor (required by Jackson)
     public BookingDTO() {
@@ -64,6 +66,8 @@ public class BookingDTO {
         this.destinationCity = bookings.getDestinationCity();
         this.fineInPercentage = bookings.getFineInPercentage();
         this.isBoard=bookings.isBoard();
+        this.isJourneyStarted=bookings.isJourneyStarted();
+
     }
 
 }
