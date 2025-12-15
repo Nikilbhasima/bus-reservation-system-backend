@@ -51,5 +51,7 @@ public class Bookings {
 
     private int fineInPercentage;
 
+    private boolean isJourneyStarted;
+
 
 }

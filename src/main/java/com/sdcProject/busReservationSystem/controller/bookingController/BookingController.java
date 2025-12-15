@@ -99,4 +99,10 @@ public class BookingController {
 
     }
 
+    @PutMapping("/updateJourneyComplete/{date}")
+    public ResponseEntity<List<BookingDTO>> updateJourneyComplete(Authentication auth,@PathVariable("date") LocalDate date) {
+        List<BookingDTO> bookingDTOList=bookingImplementation.updateJourney(auth,date).stream().map(BookingDTO::new).toList();
+        return ResponseEntity.status(HttpStatus.OK).body(bookingDTOList);
+    }
+
 }

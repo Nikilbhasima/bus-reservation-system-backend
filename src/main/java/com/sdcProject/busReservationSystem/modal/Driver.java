@@ -24,11 +24,9 @@ public class Driver {
 
     private String driver_address;
 
-
     private String driver_photo;
 
     private String driver_license_number;
-
 
     private String license_photo;
 

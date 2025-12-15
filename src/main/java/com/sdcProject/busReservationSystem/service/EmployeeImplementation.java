@@ -2,10 +2,12 @@ package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.dto.SendNotification;
 import com.sdcProject.busReservationSystem.enumFile.AssignStatus;
+import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.EmployeeInterface;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class EmployeeImplementation implements EmployeeInterface {
 
     private DriverRepository driverRepository;
@@ -116,14 +119,30 @@ public class EmployeeImplementation implements EmployeeInterface {
     }
 
     @Override
-    public boolean boardingNotification(int busId, LocalDate bookingDate) {
-        List<Bookings> bookingsList=bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
-        List<String> listOfEmails = bookingsList.stream()
-                .filter(data->!data.getStatus().equals("CANCELLED"))
+    public List<Bookings> boardingNotification(int busId, LocalDate bookingDate,Authentication authentication) {
+
+        log.info("Boarding notification"+busId+" "+bookingDate);
+        Driver driver=driverRepository.findByDriverEmail(authentication.getName());
+
+        List<Bookings> bookingsList =
+                bookingRepository.findBookingsByBusIdAndTripDate(driver.getBus().getBusId(), bookingDate);
+
+        bookingsList.forEach((data)->log.info(data.getUser().getEmail()));
+
+        List<Bookings> activeBookings = bookingsList.stream()
+                .filter(b -> b.getStatus() != BookingStatus.CANCELLED)
+                .toList();
+
+        List<String> listOfEmails = activeBookings.stream()
                 .map(b -> b.getUser().getEmail())
                 .toList();
+
         mailService.boardingNotification(listOfEmails);
-        return true;
+
+        activeBookings.forEach(b -> b.setJourneyStarted(true));
+
+
+        return bookingRepository.saveAll(activeBookings);
     }
 
     @Override

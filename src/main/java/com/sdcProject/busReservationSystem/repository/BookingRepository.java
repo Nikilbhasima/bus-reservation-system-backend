@@ -17,7 +17,7 @@ public interface BookingRepository extends JpaRepository<Bookings,Integer> {
 //    @Query(nativeQuery = true,"select * from bookings where user_id =?1")
     List<Bookings> findByUser(Users user);
 
-    @Query("SELECT b FROM Bookings b WHERE b.tripDate = :tripDate AND b.busId.busId = :busId")
+    @Query("SELECT b FROM Bookings b WHERE Date(b.tripDate) = :tripDate AND b.busId.busId = :busId")
     List<Bookings> findBookingsByBusIdAndTripDate(@Param("busId") int busId,
                                                   @Param("tripDate") LocalDate tripDate);
 

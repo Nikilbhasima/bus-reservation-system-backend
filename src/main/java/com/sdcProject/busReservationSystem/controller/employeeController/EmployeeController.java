@@ -93,8 +93,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/sendPassengerNotification/{busId}/{bookingDate}")
-    public ResponseEntity<Boolean> boardingNotification(@PathVariable int busId, @PathVariable LocalDate bookingDate){
-        employeeInterface.boardingNotification(busId,bookingDate);
-        return ResponseEntity.status(HttpStatus.OK).body(true);
+    public ResponseEntity<List<BookingDTO>> boardingNotification(Authentication authentication,@PathVariable int busId, @PathVariable LocalDate bookingDate){
+       List<BookingDTO> bookingDTOList= employeeInterface.boardingNotification(busId,bookingDate,authentication)
+               .stream()
+               .map(BookingDTO::new).toList();
+        return ResponseEntity.status(HttpStatus.OK).body(bookingDTOList);
     }
 }

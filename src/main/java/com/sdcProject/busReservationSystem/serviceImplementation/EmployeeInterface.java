@@ -21,7 +21,7 @@ public interface EmployeeInterface {
 
     public boolean sendNotificationToPassenger(int busId, LocalDate bookingDate, SendNotification sendNotification);
 
-    public boolean boardingNotification(int busId, LocalDate bookingDate);
+    public List<Bookings> boardingNotification(int busId, LocalDate bookingDate,Authentication authentication);
 
     public Driver getDriverData(Authentication authentication);
 
