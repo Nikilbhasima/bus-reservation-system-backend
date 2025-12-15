@@ -22,4 +22,6 @@ public interface BookingInterface {
     public List<Bookings> getBookingsForAgency(Authentication auth,LocalDate bookingDate,int busId);
 
     public Bookings cancelBooking(int bookingId,String reason);
+
+    public List<Bookings> updateJourney(Authentication auth,LocalDate date);
 }

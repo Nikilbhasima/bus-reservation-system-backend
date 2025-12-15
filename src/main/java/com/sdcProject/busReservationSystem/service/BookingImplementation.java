@@ -2,14 +2,8 @@ package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
 import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
-import com.sdcProject.busReservationSystem.modal.Bookings;
-import com.sdcProject.busReservationSystem.modal.Bus;
-import com.sdcProject.busReservationSystem.modal.TravelAgency;
-import com.sdcProject.busReservationSystem.modal.Users;
-import com.sdcProject.busReservationSystem.repository.BookingRepository;
-import com.sdcProject.busReservationSystem.repository.BusRepository;
-import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
-import com.sdcProject.busReservationSystem.repository.UserRepository;
+import com.sdcProject.busReservationSystem.modal.*;
+import com.sdcProject.busReservationSystem.repository.*;
 import com.sdcProject.busReservationSystem.serviceImplementation.BookingInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -25,6 +19,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class BookingImplementation implements BookingInterface {
+    private final DriverRepository driverRepository;
     private BookingRepository bookingRepository;
     private BusRepository busRepository;
     private UserRepository userRepository;
@@ -120,9 +115,6 @@ public class BookingImplementation implements BookingInterface {
 
         // Calculate difference in hours
         long hoursDifference = Math.abs(Duration.between(currentDateTime, tripDateTime).toHours());
-        System.out.println("cancellation duration: "+hoursDifference);
-        System.out.println("currrent date:"+currentDateTime);
-        System.out.println("trip time:"+tripDateTime);
 
         if (hoursDifference > 48) {
             bookings.setStatus(BookingStatus.CANCELLED);
@@ -150,4 +142,30 @@ public class BookingImplementation implements BookingInterface {
 
         return bookingRepository.save(bookings);
     }
+
+    @Override
+    public List<Bookings> updateJourney(Authentication auth, LocalDate date) {
+
+        Driver driver = driverRepository.findByDriverEmail(auth.getName());
+
+        List<Bookings> bookingsList =
+                bookingRepository.findBookingsByBusIdAndTripDate(
+                        driver.getBus().getBusId(), date
+                );
+
+        List<Bookings> activeBookings = bookingsList.stream()
+                .filter(b -> b.getStatus() != BookingStatus.CANCELLED)
+                .toList();
+
+        activeBookings.forEach(
+                booking -> booking.setStatus(BookingStatus.COMPLETED)
+        );
+
+        bookingRepository.saveAll(activeBookings);
+
+        return bookingsList;
+    }
+
+
+
 }
