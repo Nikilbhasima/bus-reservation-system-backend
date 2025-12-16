@@ -46,7 +46,6 @@ public class Bookings {
 
     private String destinationCity;
 
-
     private boolean isBoard;
 
     private int fineInPercentage;

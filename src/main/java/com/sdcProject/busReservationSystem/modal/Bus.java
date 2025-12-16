@@ -43,6 +43,10 @@ public class Bus {
 
     private float increasedPrice;
 
+    private float seatPrice;
+
+    private float sleeperPrice;
+
     @ManyToOne
     @JoinColumn(name = "busScheduleId")
     private BusSchedules busSchedules;

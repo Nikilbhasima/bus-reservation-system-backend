@@ -15,8 +15,6 @@ import java.util.List;
 @Getter
 public class BusDTO {
 
-
-
     private int busId;
 
     private String busName;
@@ -45,6 +43,9 @@ public class BusDTO {
 
     private TravelAgency travelAgency;
 
+    private float seatPrice;
+
+    private float sleeperPrice;
 
 
 
@@ -63,6 +64,8 @@ public class BusDTO {
         this.busSchedules=bus.getBusSchedules();
         this.assignStatus=bus.getAssignStatus();
         this.travelAgency=bus.getTravelAgency();
+        this.seatPrice=bus.getSeatPrice();
+        this.sleeperPrice=bus.getSleeperPrice();
     }
 
 }
