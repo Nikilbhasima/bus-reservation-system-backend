@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.enumFile.BookingStatus;
+import com.sdcProject.busReservationSystem.enumFile.BusType;
 import com.sdcProject.busReservationSystem.enumFile.PaymentStatus;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.*;
@@ -14,7 +15,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -164,6 +167,133 @@ public class BookingImplementation implements BookingInterface {
         bookingRepository.saveAll(activeBookings);
 
         return bookingsList;
+    }
+
+    @Override
+    public List<Bookings> getActiveBookingsOfAgency(TravelAgency travelAgency) {
+        return  bookingRepository.findBookingsByTravelAgencyAndStatus(travelAgency.getTravel_agency_id(),BookingStatus.CONFIRMED);
+    }
+
+    @Override
+    public Float calculateTotalRevenue(TravelAgency travelAgency) {
+
+        List<Bookings> completedBookings =
+                bookingRepository.findBookingsByTravelAgencyAndStatus(
+                        travelAgency.getTravel_agency_id(),
+                        BookingStatus.COMPLETED
+                );
+
+        List<Bus> busList = busRepository.findByTravelAgency(travelAgency);
+
+        float totalRevenue = 0;
+
+        for (Bus bus : busList) {
+            List<Bookings> bookingsOfBus = new ArrayList<>();
+
+            for (Bookings booking : completedBookings) {
+                if (booking.getBusId().getBusId() == bus.getBusId()) {
+                    bookingsOfBus.add(booking);
+                }
+            }
+
+            totalRevenue += calculateTotalRevenue(bus, bookingsOfBus);
+        }
+
+        return totalRevenue;
+    }
+
+    @Override
+    public Map<String, Integer> dataForPie(TravelAgency travelAgency) {
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (BookingStatus status : BookingStatus.values()) {
+            List<Bookings> bookingsList =
+                    bookingRepository.findBookingsByTravelAgencyAndStatus(
+                            travelAgency.getTravel_agency_id(),
+                            status
+                    );
+
+            map.put(status.name(), bookingsList.size());
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<LocalDate, Integer> dataForBarGraph(TravelAgency travelAgency, LocalDate date) {
+        Map<LocalDate, Integer> map = new HashMap<>();
+
+        LocalDate[] weekBoundaries = getAllWeekDays(date);
+        LocalDate sunday = weekBoundaries[0];
+        LocalDate saturday = weekBoundaries[6];
+
+        for (LocalDate day : weekBoundaries) {
+            map.put(day, 0);
+        }
+
+        List<Bookings> bookingsList = bookingRepository.findBookingsBySundayAndSaturday(
+                travelAgency.getTravel_agency_id(), sunday, saturday
+        );
+
+        for (Bookings booking : bookingsList) {
+            LocalDate tripDate = booking.getTripDate();
+            if (map.containsKey(tripDate)) {
+                map.put(tripDate, map.get(tripDate) + 1);
+            }
+        }
+
+        return map;
+    }
+
+    public static LocalDate[] getAllWeekDays(LocalDate date) {
+        int daysFromSunday = date.getDayOfWeek().getValue() % 7;
+        LocalDate sunday = date.minusDays(daysFromSunday);
+
+        return new LocalDate[]{
+                sunday,                 // [0] Sunday
+                sunday.plusDays(1),     // [1] Monday
+                sunday.plusDays(2),     // [2] Tuesday
+                sunday.plusDays(3),     // [3] Wednesday
+                sunday.plusDays(4),     // [4] Thursday
+                sunday.plusDays(5),     // [5] Friday
+                sunday.plusDays(6)      // [6] Saturday
+        };
+    }
+
+    private float calculateTotalRevenue(Bus bus, List<Bookings> bookings) {
+
+        float totalRevenue = 0;
+
+        if (bus.getBusType() == BusType.SEMI_SLEEPER) {
+
+            float seatPrice = bus.getSeatPrice();
+            float sleeperPrice = bus.getSleeperPrice();
+
+            for (Bookings booking : bookings) {
+
+                if (booking.getSeatName() == null) continue;
+
+                for (String seatName : booking.getSeatName()) {
+                    if (seatName.startsWith("S")) {
+                        totalRevenue += sleeperPrice;
+                    } else {
+                        totalRevenue += seatPrice;
+                    }
+                }
+            }
+
+        }
+        else {
+
+            float seatPrice = bus.getSeatPrice();
+
+            for (Bookings booking : bookings) {
+                totalRevenue += seatPrice * booking.getTotalSeats();
+            }
+        }
+
+        return totalRevenue;
     }
 
 

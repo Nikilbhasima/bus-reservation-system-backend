@@ -1,27 +1,38 @@
 package com.sdcProject.busReservationSystem.serviceImplementation;
 
 import com.sdcProject.busReservationSystem.modal.Bookings;
+import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface BookingInterface {
 
 
-    public Bookings bookSeats(Bookings bookings, Authentication auth,int busId);
+    Bookings bookSeats(Bookings bookings, Authentication auth,int busId);
 
-    public Bookings cancelBooking(Bookings bookings);
+    Bookings cancelBooking(Bookings bookings);
 
-    public List<Bookings> getUserBookings(Authentication auth);
+    List<Bookings> getUserBookings(Authentication auth);
 
-    public List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate);
+    List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate);
 
-    public Bookings updateBoardStatus(int bookingId);
+    Bookings updateBoardStatus(int bookingId);
 
-    public List<Bookings> getBookingsForAgency(Authentication auth,LocalDate bookingDate,int busId);
+    List<Bookings> getBookingsForAgency(Authentication auth,LocalDate bookingDate,int busId);
 
-    public Bookings cancelBooking(int bookingId,String reason);
+    Bookings cancelBooking(int bookingId,String reason);
 
-    public List<Bookings> updateJourney(Authentication auth,LocalDate date);
+    List<Bookings> updateJourney(Authentication auth,LocalDate date);
+
+    List<Bookings> getActiveBookingsOfAgency(TravelAgency travelAgency);
+
+    Float calculateTotalRevenue(TravelAgency travelAgency);
+
+    Map<String,Integer> dataForPie(TravelAgency travelAgency);
+
+    Map<LocalDate,Integer> dataForBarGraph(TravelAgency travelAgency,LocalDate date);
+
 }

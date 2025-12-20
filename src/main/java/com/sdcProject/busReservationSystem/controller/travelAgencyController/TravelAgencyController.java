@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.controller.travelAgencyController;
 
+import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import com.sdcProject.busReservationSystem.service.TravelAgencyImplementation;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("api/travelAgency")
@@ -32,6 +35,12 @@ public class TravelAgencyController {
     public ResponseEntity<TravelAgencyDTO> getTravelAgencyDetails(Authentication authentication) {
         TravelAgencyDTO travelAgencyDTO=new TravelAgencyDTO(travelAgencyImplementation.getTravelAgency(authentication));
         return ResponseEntity.status(HttpStatus.OK).body(travelAgencyDTO);
+    }
+
+    @GetMapping("/getData")
+    public ResponseEntity<AdminDashboardDTO> getAdminDashboardData(Authentication authentication, @RequestParam("date") LocalDate date) {
+        AdminDashboardDTO adminDashboardDTO=travelAgencyImplementation.getAdminDashboardData(authentication,date);
+        return ResponseEntity.status(HttpStatus.OK).body(adminDashboardDTO);
     }
 
 }

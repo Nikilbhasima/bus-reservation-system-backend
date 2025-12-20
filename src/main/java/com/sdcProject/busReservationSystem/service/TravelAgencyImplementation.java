@@ -1,8 +1,8 @@
 package com.sdcProject.busReservationSystem.service;
 
+import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
-import com.sdcProject.busReservationSystem.modal.TravelAgency;
-import com.sdcProject.busReservationSystem.modal.Users;
+import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.TravelAgencyInterface;
@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -18,6 +21,9 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
 
     private TravelAgencyRepository travelAgencyRepository;
     private UserRepository userRepository;
+    private BusImplementation busImplementation;
+    private EmployeeImplementation employeeImplementation;
+    private BookingImplementation bookingImplementation;
 
     @Override
     public void addTravelAgency(TravelAgency travelAgency, Authentication authentication) {
@@ -51,5 +57,26 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
     public TravelAgency getTravelAgency(Authentication authentication) {
         Users user=userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
         return travelAgencyRepository.findByUser(user);
+    }
+
+    @Override
+    public AdminDashboardDTO getAdminDashboardData(Authentication authentication, LocalDate date) {
+        Users user=userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
+        TravelAgency travelAgency=travelAgencyRepository.findByUser(user);
+        List<Bus> busList=busImplementation.findAllBuses(authentication);
+        List<Driver> driverList=employeeImplementation.getDriversByAgency(authentication);
+        List<Bookings> bookingsList=bookingImplementation.getActiveBookingsOfAgency(travelAgency);
+        float revenue= bookingImplementation.calculateTotalRevenue(travelAgency);
+        Map<String,Integer> pie=bookingImplementation.dataForPie(travelAgency);
+        Map<LocalDate,Integer> barChar=bookingImplementation.dataForBarGraph(travelAgency,date);
+
+        return AdminDashboardDTO.builder()
+                .totalDrivers(driverList.size())
+                .totalBuses(busList.size())
+                .activeBookings(bookingsList.size())
+                .totalRevenue(revenue)
+                .pieData(pie)
+                .barCharData(barChar)
+                .build();
     }
 }
