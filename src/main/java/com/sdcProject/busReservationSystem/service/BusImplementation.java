@@ -74,6 +74,7 @@ public class BusImplementation implements BusInterface {
         bus1.setIncreasedPrice(bus.getIncreasedPrice());
         bus1.setAmenities(bus.getAmenities());
         bus1.setAssignStatus(bus.getAssignStatus());
+        bus1.setSeatPrice(bus.getSeatPrice());
 
         // ✅ Update routes (fixed - was setting on 'bus' instead of 'bus1')
         if (bus.getRoutes() != null && bus.getRoutes().getRouteId() != 0) {

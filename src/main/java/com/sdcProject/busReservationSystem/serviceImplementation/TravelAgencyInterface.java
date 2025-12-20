@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.serviceImplementation;
 
+import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import org.springframework.security.core.Authentication;
@@ -12,4 +13,6 @@ public interface TravelAgencyInterface {
     public TravelAgencyDTO editTravelAgency(@RequestBody TravelAgency travelAgency, Authentication authentication);
 
     public TravelAgency getTravelAgency(Authentication authentication);
+
+    public AdminDashboardDTO getAdminDashboardData(Authentication authentication);
 }

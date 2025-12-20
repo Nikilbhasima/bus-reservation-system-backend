@@ -52,5 +52,4 @@ public class Bookings {
 
     private boolean isJourneyStarted;
 
-
 }
