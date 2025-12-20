@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("api/travelAgency")
 @AllArgsConstructor
@@ -36,8 +38,8 @@ public class TravelAgencyController {
     }
 
     @GetMapping("/getData")
-    public ResponseEntity<AdminDashboardDTO> getAdminDashboardData(Authentication authentication) {
-        AdminDashboardDTO adminDashboardDTO=travelAgencyImplementation.getAdminDashboardData(authentication);
+    public ResponseEntity<AdminDashboardDTO> getAdminDashboardData(Authentication authentication, @RequestParam("date") LocalDate date) {
+        AdminDashboardDTO adminDashboardDTO=travelAgencyImplementation.getAdminDashboardData(authentication,date);
         return ResponseEntity.status(HttpStatus.OK).body(adminDashboardDTO);
     }
 

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,7 +60,7 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
     }
 
     @Override
-    public AdminDashboardDTO getAdminDashboardData(Authentication authentication) {
+    public AdminDashboardDTO getAdminDashboardData(Authentication authentication, LocalDate date) {
         Users user=userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));
         TravelAgency travelAgency=travelAgencyRepository.findByUser(user);
         List<Bus> busList=busImplementation.findAllBuses(authentication);
@@ -67,6 +68,7 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
         List<Bookings> bookingsList=bookingImplementation.getActiveBookingsOfAgency(travelAgency);
         float revenue= bookingImplementation.calculateTotalRevenue(travelAgency);
         Map<String,Integer> pie=bookingImplementation.dataForPie(travelAgency);
+        Map<LocalDate,Integer> barChar=bookingImplementation.dataForBarGraph(travelAgency,date);
 
         return AdminDashboardDTO.builder()
                 .totalDrivers(driverList.size())
@@ -74,6 +76,7 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
                 .activeBookings(bookingsList.size())
                 .totalRevenue(revenue)
                 .pieData(pie)
+                .barCharData(barChar)
                 .build();
     }
 }

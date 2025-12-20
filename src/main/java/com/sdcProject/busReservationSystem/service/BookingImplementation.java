@@ -220,7 +220,46 @@ public class BookingImplementation implements BookingInterface {
         return map;
     }
 
+    @Override
+    public Map<LocalDate, Integer> dataForBarGraph(TravelAgency travelAgency, LocalDate date) {
+        Map<LocalDate, Integer> map = new HashMap<>();
 
+        LocalDate[] weekBoundaries = getAllWeekDays(date);
+        LocalDate sunday = weekBoundaries[0];
+        LocalDate saturday = weekBoundaries[6];
+
+        for (LocalDate day : weekBoundaries) {
+            map.put(day, 0);
+        }
+
+        List<Bookings> bookingsList = bookingRepository.findBookingsBySundayAndSaturday(
+                travelAgency.getTravel_agency_id(), sunday, saturday
+        );
+
+        for (Bookings booking : bookingsList) {
+            LocalDate tripDate = booking.getTripDate();
+            if (map.containsKey(tripDate)) {
+                map.put(tripDate, map.get(tripDate) + 1);
+            }
+        }
+
+        return map;
+    }
+
+    public static LocalDate[] getAllWeekDays(LocalDate date) {
+        int daysFromSunday = date.getDayOfWeek().getValue() % 7;
+        LocalDate sunday = date.minusDays(daysFromSunday);
+
+        return new LocalDate[]{
+                sunday,                 // [0] Sunday
+                sunday.plusDays(1),     // [1] Monday
+                sunday.plusDays(2),     // [2] Tuesday
+                sunday.plusDays(3),     // [3] Wednesday
+                sunday.plusDays(4),     // [4] Thursday
+                sunday.plusDays(5),     // [5] Friday
+                sunday.plusDays(6)      // [6] Saturday
+        };
+    }
 
     private float calculateTotalRevenue(Bus bus, List<Bookings> bookings) {
 

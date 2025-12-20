@@ -6,6 +6,8 @@ import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
+
 public interface TravelAgencyInterface {
 
     public void addTravelAgency(@RequestBody TravelAgency travelAgency, Authentication authentication);
@@ -14,5 +16,5 @@ public interface TravelAgencyInterface {
 
     public TravelAgency getTravelAgency(Authentication authentication);
 
-    public AdminDashboardDTO getAdminDashboardData(Authentication authentication);
+    public AdminDashboardDTO getAdminDashboardData(Authentication authentication, LocalDate date);
 }

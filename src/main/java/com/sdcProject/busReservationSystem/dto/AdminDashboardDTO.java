@@ -2,6 +2,7 @@ package com.sdcProject.busReservationSystem.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -25,4 +26,6 @@ public class AdminDashboardDTO {
     private double totalRevenue;
 
     private Map<String, Integer> pieData;
+
+    private Map<LocalDate,Integer> barCharData;
 }
