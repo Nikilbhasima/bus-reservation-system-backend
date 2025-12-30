@@ -42,4 +42,17 @@ public interface BookingRepository extends JpaRepository<Bookings, Integer> {
             @Param("sunday") LocalDate sunday,
             @Param("saturday") LocalDate saturday
     );
+
+    @Query(value = "SELECT COUNT(*) FROM bookings WHERE status='COMPLETED'", nativeQuery = true)
+    Integer countCompletedBookings();
+
+    @Query(value = "SELECT COUNT(*) AS total_groups\n" +
+            "FROM (\n" +
+            "         SELECT COUNT(*)\n" +
+            "         FROM bookings\n" +
+            "         WHERE bus_id =:id\n" +
+            "         GROUP BY trip_date\n" +
+            "     ) t", nativeQuery = true)
+    Integer totalTripOfBus(@Param("id") int id);
+
 }

@@ -9,19 +9,21 @@ import java.util.List;
 
 public interface BusInterface {
 
-    public Bus addBus(Bus bus, Authentication authentication);
+    Bus addBus(Bus bus, Authentication authentication);
 
-    public Bus editBus(Bus bus, int bus_id);
+    Bus editBus(Bus bus, int bus_id);
 
-    public List<Bus> findAllBuses(Authentication auth);
+    List<Bus> findAllBuses(Authentication auth);
 
-    public Bus getBusById(int busId, LocalDate date);
+    Bus getBusById(int busId, LocalDate date);
 
-    public Bus getBusById(int busId);
+    Bus getBusById(int busId);
 
-    public List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate);
+    List<Bus> getBusesByRoute(Routes routes, LocalDate travelDate);
 
-    public Bus changeBusLocation(int busId);
+    Bus changeBusLocation(int busId);
 
-    public Bus updateBusStatus(int busId);
+    Bus updateBusStatus(int busId);
+
+    Integer countBuses();
 }
