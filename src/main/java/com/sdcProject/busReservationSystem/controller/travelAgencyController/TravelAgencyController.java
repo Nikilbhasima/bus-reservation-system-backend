@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.controller.travelAgencyController;
 
 import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
+import com.sdcProject.busReservationSystem.dto.SuperAdminDashboardDto;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import com.sdcProject.busReservationSystem.service.TravelAgencyImplementation;
@@ -53,6 +54,12 @@ public class TravelAgencyController {
     @GetMapping("/getAllTravelAgencyDetails")
     public ResponseEntity<List<TravelAgencyDTO>> getAllTravelAgencyDetails() {
         return ResponseEntity.status(HttpStatus.OK).body(travelAgencyImplementation.getTravelAgencyList());
+    }
+
+    @GetMapping("/getSuperAdminDashboardData")
+    public ResponseEntity<SuperAdminDashboardDto> getSuperAdminDashboardData() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(travelAgencyImplementation.getSuperAdminDashboardData());
     }
 
 }

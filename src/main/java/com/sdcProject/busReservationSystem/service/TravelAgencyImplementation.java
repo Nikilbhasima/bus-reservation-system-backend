@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
+import com.sdcProject.busReservationSystem.dto.SuperAdminDashboardDto;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.*;
 import com.sdcProject.busReservationSystem.repository.TravelAgencyRepository;
@@ -86,5 +87,15 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
     public List<TravelAgencyDTO> getTravelAgencyList() {
         return travelAgencyRepository
                 .findAll().stream().map(TravelAgencyDTO::new).toList();
+    }
+
+    @Override
+    public SuperAdminDashboardDto getSuperAdminDashboardData() {
+        return SuperAdminDashboardDto.builder()
+                .activeBus(busImplementation.countBuses())
+                .totalAgency(travelAgencyRepository.countAgency())
+                .totalBooking(bookingImplementation.countBookings())
+                .totalTrip(bookingImplementation.totalTrip())
+                .build();
     }
 }

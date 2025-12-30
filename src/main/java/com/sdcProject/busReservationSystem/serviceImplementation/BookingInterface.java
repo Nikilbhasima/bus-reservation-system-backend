@@ -35,4 +35,8 @@ public interface BookingInterface {
 
     Map<LocalDate,Integer> dataForBarGraph(TravelAgency travelAgency,LocalDate date);
 
+    Integer countBookings();
+
+    Integer totalTrip();
+
 }

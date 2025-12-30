@@ -140,6 +140,7 @@ public class BookingImplementation implements BookingInterface {
             bookings.setCancellationReason(bookings.getCancellationReason());
             bookings.setFineInPercentage(100);
         }
+        bookings.setPaymentStatus(PaymentStatus.REFUNDED);
         bookings.setCancellationReason(reason);
         bookings.setPaymentStatus(PaymentStatus.REFUNDED);
 
@@ -244,6 +245,22 @@ public class BookingImplementation implements BookingInterface {
         }
 
         return map;
+    }
+
+    @Override
+    public Integer countBookings() {
+        return bookingRepository.countCompletedBookings();
+    }
+
+    @Override
+    public Integer totalTrip() {
+        List<Bus> busList=busRepository.findAll();
+        int totalTrip=0;
+        for (Bus bus : busList) {
+            int count=bookingRepository.totalTripOfBus(bus.getBusId());
+            totalTrip+=count;
+        }
+        return totalTrip;
     }
 
     public static LocalDate[] getAllWeekDays(LocalDate date) {

@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class BusImplementation implements BusInterface {
 
-
     private BusRepository busRepository;
     private TravelAgencyRepository travelAgencyRepository;
     private UserRepository userRepository;
@@ -214,4 +213,10 @@ public class BusImplementation implements BusInterface {
         }
 
     }
+
+    @Override
+    public Integer countBuses() {
+        return busRepository.totalBus();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.serviceImplementation;
 
 import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
+import com.sdcProject.busReservationSystem.dto.SuperAdminDashboardDto;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import org.springframework.security.core.Authentication;
@@ -22,5 +23,7 @@ public interface TravelAgencyInterface {
     AdminDashboardDTO getAdminDashboardData(Authentication authentication, LocalDate date);
 
     List<TravelAgencyDTO> getTravelAgencyList();
+
+    SuperAdminDashboardDto getSuperAdminDashboardData();
 
 }
