@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/travelAgency")
@@ -19,28 +20,39 @@ public class TravelAgencyController {
 
     private TravelAgencyImplementation travelAgencyImplementation;
 
-    @PostMapping("/addTravelAgencyDetails")
-    public ResponseEntity<String> addTravelAgencyDetails(@RequestBody TravelAgency travelAgency, Authentication authentication) {
-        travelAgencyImplementation.addTravelAgency(travelAgency,authentication);
+    @PostMapping("/addTravelAgencyDetails/{ownerId}")
+    public ResponseEntity<String> addTravelAgencyDetails(@RequestBody TravelAgency travelAgency, @PathVariable int ownerId, Authentication authentication) {
+        travelAgencyImplementation.addTravelAgency(travelAgency, ownerId, authentication);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Travel agency added successfully!");
     }
 
-    @PostMapping("/editTravelAgencyDetials")
-    public ResponseEntity<TravelAgencyDTO> editTravelAgencyDetails(@RequestBody TravelAgency travelAgency, Authentication authentication) {
-        TravelAgencyDTO updatedAgency =travelAgencyImplementation.editTravelAgency(travelAgency,authentication);
-        return ResponseEntity.ok(updatedAgency);    }
+    @PostMapping("/editTravelAgencyDetials/{agencyId}")
+    public ResponseEntity<TravelAgencyDTO> editTravelAgencyDetails(@RequestBody TravelAgency travelAgency,
+                                                                   Authentication authentication,
+                                                                   @PathVariable Integer agencyId) {
+        TravelAgencyDTO updatedAgency = travelAgencyImplementation.editTravelAgency(travelAgency,
+                authentication,
+                agencyId);
+        return ResponseEntity.ok(updatedAgency);
+    }
 
     @GetMapping("/getTravelAgencyDetails")
     public ResponseEntity<TravelAgencyDTO> getTravelAgencyDetails(Authentication authentication) {
-        TravelAgencyDTO travelAgencyDTO=new TravelAgencyDTO(travelAgencyImplementation.getTravelAgency(authentication));
+        TravelAgencyDTO travelAgencyDTO = new TravelAgencyDTO(travelAgencyImplementation.getTravelAgency(authentication));
         return ResponseEntity.status(HttpStatus.OK).body(travelAgencyDTO);
     }
 
     @GetMapping("/getData")
-    public ResponseEntity<AdminDashboardDTO> getAdminDashboardData(Authentication authentication, @RequestParam("date") LocalDate date) {
-        AdminDashboardDTO adminDashboardDTO=travelAgencyImplementation.getAdminDashboardData(authentication,date);
+    public ResponseEntity<AdminDashboardDTO> getAdminDashboardData(Authentication authentication,
+                                                                   @RequestParam("date") LocalDate date) {
+        AdminDashboardDTO adminDashboardDTO = travelAgencyImplementation.getAdminDashboardData(authentication, date);
         return ResponseEntity.status(HttpStatus.OK).body(adminDashboardDTO);
+    }
+
+    @GetMapping("/getAllTravelAgencyDetails")
+    public ResponseEntity<List<TravelAgencyDTO>> getAllTravelAgencyDetails() {
+        return ResponseEntity.status(HttpStatus.OK).body(travelAgencyImplementation.getTravelAgencyList());
     }
 
 }

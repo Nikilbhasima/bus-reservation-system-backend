@@ -7,14 +7,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TravelAgencyInterface {
 
-    public void addTravelAgency(@RequestBody TravelAgency travelAgency, Authentication authentication);
+    void addTravelAgency(@RequestBody TravelAgency travelAgency, int ownerId, Authentication authentication);
 
-    public TravelAgencyDTO editTravelAgency(@RequestBody TravelAgency travelAgency, Authentication authentication);
+    TravelAgencyDTO editTravelAgency(@RequestBody TravelAgency travelAgency,
+                                     Authentication authentication,
+                                     Integer ownerId);
 
-    public TravelAgency getTravelAgency(Authentication authentication);
+    TravelAgency getTravelAgency(Authentication authentication);
 
-    public AdminDashboardDTO getAdminDashboardData(Authentication authentication, LocalDate date);
+    AdminDashboardDTO getAdminDashboardData(Authentication authentication, LocalDate date);
+
+    List<TravelAgencyDTO> getTravelAgencyList();
+
 }
