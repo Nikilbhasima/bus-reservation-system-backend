@@ -53,6 +53,10 @@ private AuthenticationManager authenticationManager;
         user.setPhoneNumber(authRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(authRequest.getPassword()));
 
+        if(authRequest.getImage()!=null){
+            user.setImage(authRequest.getImage());
+        }
+
         List<Roles> roles = new ArrayList<>();
         Roles role;
 

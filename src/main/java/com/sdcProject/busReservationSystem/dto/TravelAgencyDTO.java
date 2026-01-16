@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.dto;
 
 import com.sdcProject.busReservationSystem.modal.TravelAgency;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
