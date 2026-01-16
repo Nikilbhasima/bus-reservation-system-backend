@@ -110,4 +110,9 @@ public class EmployeeController {
     public ResponseEntity<List<OwnerDto>> getAllOwners() {
         return ResponseEntity.status(HttpStatus.OK).body(employeeInterface.getAllOwners());
     }
+
+    @DeleteMapping("/delete/{ownerId}")
+    public void deleteOwner(@PathVariable int ownerId) {
+        employeeInterface.deleteOwner(ownerId);
+    }
 }

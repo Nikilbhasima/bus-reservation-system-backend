@@ -202,4 +202,9 @@ public class EmployeeImplementation implements EmployeeInterface {
         }
         return owners;
     }
+
+    @Override
+    public void deleteOwner(int ownerId) {
+        userRepository.deleteById(ownerId);
+    }
 }

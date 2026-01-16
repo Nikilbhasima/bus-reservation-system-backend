@@ -33,4 +33,6 @@ public interface EmployeeInterface {
     OwnerDto getOwner(int ownerId);
 
     List<OwnerDto> getAllOwners();
+
+    void deleteOwner(int ownerId);
 }

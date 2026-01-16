@@ -67,7 +67,6 @@ private AuthenticationManager authenticationManager;
             roles.addAll(role1);
         }else{
             if(authRequest.getRole().equals("ROLE_OWNER")){
-                System.out.println(authRequest.getRole());
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_OWNER");
                 if(roleExists.isPresent()) {
                     role = roleExists.get();
@@ -75,7 +74,6 @@ private AuthenticationManager authenticationManager;
                 }
             }
             if(authRequest.getRole().equals("ROLE_USER")){
-                System.out.println(authRequest.getRole());
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_USER");
                 if(roleExists.isPresent()) {
                     role = roleExists.get();
@@ -84,7 +82,6 @@ private AuthenticationManager authenticationManager;
             }
 
             if(authRequest.getRole().equals("ROLE_BUS")){
-                System.out.println(authRequest.getRole());
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_BUS");
                 if(roleExists.isPresent()) {
                     role = roleExists.get();

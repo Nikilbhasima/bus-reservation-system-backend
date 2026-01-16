@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.controller;
 
+import com.sdcProject.busReservationSystem.dto.OwnerDto;
 import com.sdcProject.busReservationSystem.dto.UserDto;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.service.UserImplementation;
@@ -26,5 +27,10 @@ public class UsersController {
     public ResponseEntity<UserDto> updateUserDetails(Authentication authentication, @RequestBody Users user) {
         UserDto userDto=new UserDto(userImplementation.updateUser(user,authentication));
         return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    }
+
+    @PutMapping("/updateOwner/{ownerId}")
+    public void updateOwnerDetails(@PathVariable int ownerId, @RequestBody OwnerDto ownerDto) {
+        userImplementation.updateOwnerData(ownerId,ownerDto);
     }
 }

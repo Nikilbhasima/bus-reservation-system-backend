@@ -1,6 +1,5 @@
 package com.sdcProject.busReservationSystem.dto;
 
-import com.sdcProject.busReservationSystem.modal.TravelAgency;
 import lombok.*;
 
 /**
@@ -19,4 +18,5 @@ public class OwnerDto {
     private String phoneNumber;
     private String image;
     private TravelAgencyDTO travelAgency;
+    private String password;
 }
