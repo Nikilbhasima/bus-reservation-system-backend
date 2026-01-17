@@ -13,7 +13,11 @@ import java.util.List;
 
 public interface TravelAgencyInterface {
 
-    void addTravelAgency(@RequestBody TravelAgency travelAgency, int ownerId, Authentication authentication);
+    void addTravelAgency(@RequestBody TravelAgency travelAgency, int ownerId);
+
+    TravelAgencyDTO getTravelAgencyById(int id);
+
+    void updateTravelAgency(@RequestBody TravelAgency travelAgency, int agencyId);
 
     TravelAgencyDTO editTravelAgency(@RequestBody TravelAgency travelAgency,
                                      Authentication authentication,

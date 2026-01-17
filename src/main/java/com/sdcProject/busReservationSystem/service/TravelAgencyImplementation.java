@@ -27,10 +27,36 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
     private BookingImplementation bookingImplementation;
 
     @Override
-    public void addTravelAgency(TravelAgency travelAgency, int ownerId, Authentication authentication) {
+    public void addTravelAgency(TravelAgency travelAgency, int ownerId) {
         Users user = userRepository.findById(ownerId).orElseThrow(() -> new RuntimeException("User with id " + ownerId + " not found"));
         travelAgency.setUser(user);
         travelAgencyRepository.save(travelAgency);
+    }
+
+    @Override
+    public TravelAgencyDTO getTravelAgencyById(int id) {
+        return new TravelAgencyDTO(travelAgencyRepository
+                .findById(id).orElseThrow(() -> new RuntimeException("Travel Agency with id " + id + " not found")));
+    }
+
+    @Override
+    public void updateTravelAgency(TravelAgency travelAgency, int agencyId) {
+        TravelAgency agency=travelAgencyRepository.findById(agencyId)
+                .orElseThrow(() -> new RuntimeException("Travel Agency does not exist"));
+        if (travelAgency.getTravel_agency_name()!=null) {
+            agency.setTravel_agency_name(agency.getTravel_agency_name());
+        }
+        if(travelAgency.getAddress()!=null) {
+            agency.setAddress(travelAgency.getAddress());
+        }
+
+        if (travelAgency.getRegistration_number()!=null) {
+            agency.setRegistration_number(travelAgency.getRegistration_number());
+        }
+        if (travelAgency.getAgency_logo() !=null) {
+            agency.setAgency_logo(travelAgency.getAgency_logo());
+        }
+        travelAgencyRepository.save(agency);
     }
 
     @Override
