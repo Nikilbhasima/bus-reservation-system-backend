@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.service;
 
+import com.sdcProject.busReservationSystem.dto.OwnerDto;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
 import com.sdcProject.busReservationSystem.serviceImplementation.UserInterface;
@@ -34,6 +35,27 @@ public class UserImplementation implements UserInterface {
 
         }
         return userRepository.save(users);
+    }
+
+    @Override
+    public void updateOwnerData(int ownerId, OwnerDto ownerDto) {
+        Users users=userRepository.findById(ownerId).orElseThrow(() -> new RuntimeException("User not found"));
+        if (ownerDto.getImage()!=null){
+            users.setImage(ownerDto.getImage());
+        }
+        if (ownerDto.getUsername()!=null){
+            users.setUsername(ownerDto.getUsername());
+        }
+        if (ownerDto.getPhoneNumber()!=null){
+            users.setPhoneNumber(ownerDto.getPhoneNumber());
+        }
+        if (ownerDto.getEmail()!=null){
+            users.setEmail(ownerDto.getEmail());
+        }
+        if (ownerDto.getPassword()!=null){
+            users.setPassword( passwordEncoder.encode(ownerDto.getPassword()) );
+        }
+        userRepository.save(users);
     }
 
 

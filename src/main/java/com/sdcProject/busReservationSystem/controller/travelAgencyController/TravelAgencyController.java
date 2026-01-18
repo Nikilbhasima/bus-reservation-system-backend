@@ -22,10 +22,21 @@ public class TravelAgencyController {
     private TravelAgencyImplementation travelAgencyImplementation;
 
     @PostMapping("/addTravelAgencyDetails/{ownerId}")
-    public ResponseEntity<String> addTravelAgencyDetails(@RequestBody TravelAgency travelAgency, @PathVariable int ownerId, Authentication authentication) {
-        travelAgencyImplementation.addTravelAgency(travelAgency, ownerId, authentication);
+    public ResponseEntity<String> addTravelAgencyDetails(@RequestBody TravelAgency travelAgency, @PathVariable int ownerId) {
+        travelAgencyImplementation.addTravelAgency(travelAgency, ownerId);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Travel agency added successfully!");
+    }
+
+    @GetMapping("/getAgency/{id}")
+    public ResponseEntity<TravelAgencyDTO> getTravelAgencyDetails( @PathVariable int id) {
+                return ResponseEntity.status(HttpStatus.CREATED)
+                .body(travelAgencyImplementation.getTravelAgencyById(id));
+    }
+
+    @PutMapping("/update/{agencyId}")
+    public void updateTravelAgency(@RequestBody TravelAgency travelAgency, @PathVariable int agencyId) {
+        travelAgencyImplementation.updateTravelAgency(travelAgency, agencyId);
     }
 
     @PostMapping("/editTravelAgencyDetials/{agencyId}")

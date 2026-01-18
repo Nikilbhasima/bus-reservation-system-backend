@@ -1,6 +1,7 @@
 package com.sdcProject.busReservationSystem.service;
 
 import com.sdcProject.busReservationSystem.dto.AdminDashboardDTO;
+import com.sdcProject.busReservationSystem.dto.OwnerDto;
 import com.sdcProject.busReservationSystem.dto.SuperAdminDashboardDto;
 import com.sdcProject.busReservationSystem.dto.TravelAgencyDTO;
 import com.sdcProject.busReservationSystem.modal.*;
@@ -26,33 +27,64 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
     private BookingImplementation bookingImplementation;
 
     @Override
-    public void addTravelAgency(TravelAgency travelAgency, int ownerId, Authentication authentication) {
+    public void addTravelAgency(TravelAgency travelAgency, int ownerId) {
         Users user = userRepository.findById(ownerId).orElseThrow(() -> new RuntimeException("User with id " + ownerId + " not found"));
         travelAgency.setUser(user);
         travelAgencyRepository.save(travelAgency);
     }
 
     @Override
-    public TravelAgencyDTO editTravelAgency(TravelAgency travelAgency, Authentication authentication, Integer agencyId) {
-        Users user;
-        if (agencyId != null) {
-            user = userRepository.findById(agencyId).orElseThrow(() ->
-                    new RuntimeException("User with id " + agencyId + " not found"));
-        } else {
-            user = userRepository.findByEmail(authentication.getName())
+    public TravelAgencyDTO getTravelAgencyById(int id) {
+        return new TravelAgencyDTO(travelAgencyRepository
+                .findById(id).orElseThrow(() -> new RuntimeException("Travel Agency with id " + id + " not found")));
+    }
+
+    @Override
+    public void updateTravelAgency(TravelAgency travelAgency, int agencyId) {
+        TravelAgency agency = travelAgencyRepository.findById(agencyId)
+                .orElseThrow(() -> new RuntimeException("Travel Agency does not exist"));
+        if (travelAgency.getTravel_agency_name() != null) {
+            agency.setTravel_agency_name(agency.getTravel_agency_name());
+        }
+        if (travelAgency.getAddress() != null) {
+            agency.setAddress(travelAgency.getAddress());
+        }
+
+        if (travelAgency.getRegistration_number() != null) {
+            agency.setRegistration_number(travelAgency.getRegistration_number());
+        }
+        if (travelAgency.getAgency_logo() != null) {
+            agency.setAgency_logo(travelAgency.getAgency_logo());
+        }
+        travelAgencyRepository.save(agency);
+    }
+
+    @Override
+    public TravelAgencyDTO editTravelAgency(TravelAgency travelAgency,
+                                            Authentication authentication,
+                                            Integer agencyId) {
+        Users user= userRepository.findByEmail(authentication.getName())
                     .orElseThrow(() ->
                             new RuntimeException("User with email " + authentication.getName() + " not found"));
-        }
+
 
         TravelAgency travelAgency1 = travelAgencyRepository.findByUser(user);
 
         if (travelAgency1 == null) {
             throw new RuntimeException("Travel agency not found for this user");
         }
-        travelAgency1.setTravel_agency_name(travelAgency.getTravel_agency_name());
-        travelAgency1.setRegistration_number(travelAgency.getRegistration_number());
-        travelAgency1.setAddress(travelAgency.getAddress());
-        travelAgency1.setAgency_logo(travelAgency.getAgency_logo());
+        if(travelAgency.getAgency_logo() != null) {
+            travelAgency1.setAgency_logo(travelAgency.getAgency_logo());
+        }
+        if (travelAgency.getAddress() != null) {
+            travelAgency1.setAddress(travelAgency.getAddress());
+        }
+        if (travelAgency.getRegistration_number() != null) {
+            travelAgency1.setRegistration_number(travelAgency.getRegistration_number());
+        }
+        if (travelAgency.getTravel_agency_name() != null) {
+            travelAgency1.setTravel_agency_name(travelAgency.getTravel_agency_name());
+        }
         return new TravelAgencyDTO(travelAgencyRepository.save(travelAgency1));
     }
 

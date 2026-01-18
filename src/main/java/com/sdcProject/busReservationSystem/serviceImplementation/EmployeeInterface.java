@@ -1,5 +1,6 @@
 package com.sdcProject.busReservationSystem.serviceImplementation;
 
+import com.sdcProject.busReservationSystem.dto.OwnerDto;
 import com.sdcProject.busReservationSystem.dto.SendNotification;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Driver;
@@ -9,22 +10,29 @@ import java.util.List;
 
 public interface EmployeeInterface {
 
-    public Driver addDriverDetails(Driver driver, Authentication authentication);
+    Driver addDriverDetails(Driver driver, Authentication authentication);
 
-    public Driver editDriver(Driver driver,int driverId);
+    Driver editDriver(Driver driver,int driverId);
 
-    public List<Driver> getDriversByAgency(Authentication auth);
+    List<Driver> getDriversByAgency(Authentication auth);
 
-    public Driver getDriverById(int driverId);
+    Driver getDriverById(int driverId);
 
-    public List<Bookings> bookingsByDriverAndDate(Authentication authentication, LocalDate date);
+    List<Bookings> bookingsByDriverAndDate(Authentication authentication, LocalDate date);
 
-    public boolean sendNotificationToPassenger(int busId, LocalDate bookingDate, SendNotification sendNotification);
+    boolean sendNotificationToPassenger(int busId, LocalDate bookingDate, SendNotification sendNotification);
 
-    public List<Bookings> boardingNotification(int busId, LocalDate bookingDate,Authentication authentication);
+    List<Bookings> boardingNotification(int busId, LocalDate bookingDate,Authentication authentication);
 
-    public Driver getDriverData(Authentication authentication);
+    Driver getDriverData(Authentication authentication);
 
-    public Driver unassignDriver(int driverId);
-    public Driver assignDriver(int driverId, int busId);
+    Driver unassignDriver(int driverId);
+
+    Driver assignDriver(int driverId, int busId);
+
+    OwnerDto getOwner(int ownerId);
+
+    List<OwnerDto> getAllOwners();
+
+    void deleteOwner(int ownerId);
 }

@@ -14,4 +14,7 @@ public interface TravelAgencyRepository extends JpaRepository<TravelAgency, Inte
 
     @Query(value = "SELECT COUNT(*) as total FROM travel_agency",nativeQuery = true)
     Integer countAgency();
+
+    @Query(value="SELECT * FROM travel_agency where userId=:ownerId",nativeQuery = true)
+    TravelAgency findByUserId(int ownerId);
 }

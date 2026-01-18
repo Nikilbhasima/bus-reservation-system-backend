@@ -21,7 +21,4 @@ public class Roles {
     int roleId;
 
     String role;
-
-
-
 }

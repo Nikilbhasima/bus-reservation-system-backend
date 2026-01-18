@@ -2,6 +2,7 @@ package com.sdcProject.busReservationSystem.controller.employeeController;
 
 import com.sdcProject.busReservationSystem.dto.BookingDTO;
 import com.sdcProject.busReservationSystem.dto.EmployeeDTO;
+import com.sdcProject.busReservationSystem.dto.OwnerDto;
 import com.sdcProject.busReservationSystem.dto.SendNotification;
 import com.sdcProject.busReservationSystem.modal.Bookings;
 import com.sdcProject.busReservationSystem.modal.Driver;
@@ -98,5 +99,20 @@ public class EmployeeController {
                .stream()
                .map(BookingDTO::new).toList();
         return ResponseEntity.status(HttpStatus.OK).body(bookingDTOList);
+    }
+
+    @GetMapping("/getOwnerDetail/{ownerId}")
+    public ResponseEntity<OwnerDto> getOwnerDetail(@PathVariable int ownerId) {
+        return ResponseEntity.status(HttpStatus.OK).body(employeeInterface.getOwner(ownerId));
+    }
+
+    @GetMapping("/getAllOwner")
+    public ResponseEntity<List<OwnerDto>> getAllOwners() {
+        return ResponseEntity.status(HttpStatus.OK).body(employeeInterface.getAllOwners());
+    }
+
+    @DeleteMapping("/delete/{ownerId}")
+    public void deleteOwner(@PathVariable int ownerId) {
+        employeeInterface.deleteOwner(ownerId);
     }
 }

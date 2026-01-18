@@ -20,7 +20,10 @@ public class TravelAgency {
 
     private String address;
 
-    @OneToOne
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "userId")
     private Users user;
 
