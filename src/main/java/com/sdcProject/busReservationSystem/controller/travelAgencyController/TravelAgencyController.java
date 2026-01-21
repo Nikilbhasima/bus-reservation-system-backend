@@ -68,9 +68,9 @@ public class TravelAgencyController {
     }
 
     @GetMapping("/getSuperAdminDashboardData")
-    public ResponseEntity<SuperAdminDashboardDto> getSuperAdminDashboardData() {
+    public ResponseEntity<SuperAdminDashboardDto> getSuperAdminDashboardData(@RequestParam("date") LocalDate date) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(travelAgencyImplementation.getSuperAdminDashboardData());
+                .body(travelAgencyImplementation.getSuperAdminDashboardData(date));
     }
 
 }

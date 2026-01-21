@@ -122,12 +122,15 @@ public class TravelAgencyImplementation implements TravelAgencyInterface {
     }
 
     @Override
-    public SuperAdminDashboardDto getSuperAdminDashboardData() {
+    public SuperAdminDashboardDto getSuperAdminDashboardData(LocalDate date) {
         return SuperAdminDashboardDto.builder()
                 .activeBus(busImplementation.countBuses())
                 .totalAgency(travelAgencyRepository.countAgency())
                 .totalBooking(bookingImplementation.countBookings())
                 .totalTrip(bookingImplementation.totalTrip())
+                .pieData(bookingImplementation.dataForPie())
+                .barCharData(bookingImplementation.dataForBarGraph(date))
                 .build();
     }
+
 }

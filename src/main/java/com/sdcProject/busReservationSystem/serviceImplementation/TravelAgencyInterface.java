@@ -29,6 +29,7 @@ public interface TravelAgencyInterface {
 
     List<TravelAgencyDTO> getTravelAgencyList();
 
-    SuperAdminDashboardDto getSuperAdminDashboardData();
+    SuperAdminDashboardDto getSuperAdminDashboardData(LocalDate date);
+
 
 }
