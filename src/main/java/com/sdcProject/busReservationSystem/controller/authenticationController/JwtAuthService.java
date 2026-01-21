@@ -89,8 +89,6 @@ private AuthenticationManager authenticationManager;
                 }
             }
 
-
-
         }
 
         user.setRoles(roles);

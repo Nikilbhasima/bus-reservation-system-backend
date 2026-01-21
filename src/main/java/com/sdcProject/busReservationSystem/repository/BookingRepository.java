@@ -35,10 +35,25 @@ public interface BookingRepository extends JpaRepository<Bookings, Integer> {
             @Param("status") BookingStatus status
     );
 
+    @Query("""
+                SELECT b FROM Bookings b
+                WHERE b.status = :status
+            """)
+    List<Bookings> findBookingsByTravelAgencyAndStatus(
+            @Param("status") BookingStatus status
+    );
+
 
     @Query("SELECT b FROM Bookings b WHERE b.busId.travelAgency.travel_agency_id = :id AND b.tripDate >= :sunday AND b.tripDate <= :saturday")
     List<Bookings> findBookingsBySundayAndSaturday(
             @Param("id") int travelAgencyId,
+            @Param("sunday") LocalDate sunday,
+            @Param("saturday") LocalDate saturday
+    );
+
+
+    @Query("SELECT b FROM Bookings b WHERE b.tripDate >= :sunday AND b.tripDate <= :saturday")
+    List<Bookings> findBookingsBySundayAndSaturday(
             @Param("sunday") LocalDate sunday,
             @Param("saturday") LocalDate saturday
     );

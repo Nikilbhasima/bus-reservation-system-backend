@@ -33,7 +33,11 @@ public interface BookingInterface {
 
     Map<String,Integer> dataForPie(TravelAgency travelAgency);
 
+    Map<String,Integer> dataForPie();
+
     Map<LocalDate,Integer> dataForBarGraph(TravelAgency travelAgency,LocalDate date);
+
+    Map<LocalDate,Integer> dataForBarGraph(LocalDate date);
 
     Integer countBookings();
 

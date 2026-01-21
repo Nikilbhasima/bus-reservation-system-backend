@@ -30,9 +30,9 @@ public class BookingImplementation implements BookingInterface {
 
     public Bookings bookSeats(Bookings bookings, Authentication auth, int busId) {
 
-        Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
+        Users users = userRepository.findByEmail(auth.getName()).orElseThrow(() -> new RuntimeException("User not found"));
 
-        Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
+        Bus bus = busRepository.findById(busId).orElseThrow(() -> new RuntimeException("Bus not found"));
 
         LocalDate today = LocalDate.now();
 
@@ -49,7 +49,7 @@ public class BookingImplementation implements BookingInterface {
 
     @Override
     public Bookings cancelBooking(Bookings bookings) {
-        Bookings bookings1=bookingRepository.findById(bookings.getBookingId()).orElseThrow(()->new RuntimeException("Booking not found"));
+        Bookings bookings1 = bookingRepository.findById(bookings.getBookingId()).orElseThrow(() -> new RuntimeException("Booking not found"));
         bookings1.setStatus(BookingStatus.CANCELLED);
         bookings1.setCancellationReason(bookings.getCancellationReason());
 
@@ -58,47 +58,47 @@ public class BookingImplementation implements BookingInterface {
 
     @Override
     public List<Bookings> getUserBookings(Authentication auth) {
-        Users user=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
+        Users user = userRepository.findByEmail(auth.getName()).orElseThrow(() -> new RuntimeException("User not found"));
         return bookingRepository.findByUser(user);
     }
 
     @Override
     public List<Bookings> getBookingsByBusIdAndDate(int busId, LocalDate bookingDate) {
-        return bookingRepository.findBookingsByBusIdAndTripDate(busId,bookingDate);
+        return bookingRepository.findBookingsByBusIdAndTripDate(busId, bookingDate);
     }
 
     @Override
     public Bookings updateBoardStatus(int bookingId) {
-        Bookings bookings=bookingRepository.findById(bookingId).orElseThrow(()->new RuntimeException("Booking not found"));
+        Bookings bookings = bookingRepository.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
         bookings.setBoard(true);
         return bookingRepository.save(bookings);
     }
 
     @Override
-    public List<Bookings> getBookingsForAgency(Authentication auth,LocalDate bookingDate,int busId) {
-        Users users=userRepository.findByEmail(auth.getName()).orElseThrow(()->new RuntimeException("User not found"));
-        TravelAgency travelAgency=travelAgencyRepository.findByUser(users);
-        List<Bus> buses=busRepository.findByTravelAgency(travelAgency);
+    public List<Bookings> getBookingsForAgency(Authentication auth, LocalDate bookingDate, int busId) {
+        Users users = userRepository.findByEmail(auth.getName()).orElseThrow(() -> new RuntimeException("User not found"));
+        TravelAgency travelAgency = travelAgencyRepository.findByUser(users);
+        List<Bus> buses = busRepository.findByTravelAgency(travelAgency);
 //        Adding list of bookings
-        List<Bookings> bookingsList=new ArrayList<>();
+        List<Bookings> bookingsList = new ArrayList<>();
 
 //        find bookings of each bus
-        if(busId==0) {
+        if (busId == 0) {
             for (Bus bus : buses) {
-                List<Bookings> bookings=bookingRepository.findByBookingDate(bus,bookingDate);
+                List<Bookings> bookings = bookingRepository.findByBookingDate(bus, bookingDate);
                 bookingsList.addAll(bookings);
             }
-        }else {
-            Bus bus=busRepository.findById(busId).orElseThrow(()->new RuntimeException("Bus not found"));
-                List<Bookings> bookings=bookingRepository.findByBookingDate(bus,bookingDate);
-                bookingsList.addAll(bookings);
+        } else {
+            Bus bus = busRepository.findById(busId).orElseThrow(() -> new RuntimeException("Bus not found"));
+            List<Bookings> bookings = bookingRepository.findByBookingDate(bus, bookingDate);
+            bookingsList.addAll(bookings);
         }
 
         return bookingsList;
     }
 
     @Override
-    public Bookings cancelBooking(int bookingId,String reason) {
+    public Bookings cancelBooking(int bookingId, String reason) {
         Bookings bookings = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
@@ -124,18 +124,15 @@ public class BookingImplementation implements BookingInterface {
             bookings.setCancellationReason(bookings.getCancellationReason());
             bookings.setFineInPercentage(0);
 
-        }
-        else if (hoursDifference >= 24 && hoursDifference <= 48) {
+        } else if (hoursDifference >= 24 && hoursDifference <= 48) {
             bookings.setStatus(BookingStatus.CANCELLED);
             bookings.setCancellationReason(bookings.getCancellationReason());
             bookings.setFineInPercentage(25);
-        }
-        else if (hoursDifference >= 14 && hoursDifference < 24) {
+        } else if (hoursDifference >= 14 && hoursDifference < 24) {
             bookings.setStatus(BookingStatus.CANCELLED);
             bookings.setCancellationReason(bookings.getCancellationReason());
             bookings.setFineInPercentage(50);
-        }
-        else {
+        } else {
             bookings.setStatus(BookingStatus.CANCELLED);
             bookings.setCancellationReason(bookings.getCancellationReason());
             bookings.setFineInPercentage(100);
@@ -172,7 +169,7 @@ public class BookingImplementation implements BookingInterface {
 
     @Override
     public List<Bookings> getActiveBookingsOfAgency(TravelAgency travelAgency) {
-        return  bookingRepository.findBookingsByTravelAgencyAndStatus(travelAgency.getTravel_agency_id(),BookingStatus.CONFIRMED);
+        return bookingRepository.findBookingsByTravelAgencyAndStatus(travelAgency.getTravel_agency_id(), BookingStatus.CONFIRMED);
     }
 
     @Override
@@ -222,6 +219,21 @@ public class BookingImplementation implements BookingInterface {
     }
 
     @Override
+    public Map<String, Integer> dataForPie() {
+        Map<String, Integer> map = new HashMap<>();
+
+        for (BookingStatus status : BookingStatus.values()) {
+            List<Bookings> bookingsList =
+                    bookingRepository.findBookingsByTravelAgencyAndStatus(
+                            status
+                    );
+
+            map.put(status.name(), bookingsList.size());
+        }
+        return map;
+    }
+
+    @Override
     public Map<LocalDate, Integer> dataForBarGraph(TravelAgency travelAgency, LocalDate date) {
         Map<LocalDate, Integer> map = new HashMap<>();
 
@@ -248,17 +260,43 @@ public class BookingImplementation implements BookingInterface {
     }
 
     @Override
+    public Map<LocalDate, Integer> dataForBarGraph(LocalDate date) {
+
+        Map<LocalDate, Integer> map = new HashMap<>();
+
+        LocalDate[] weekBoundaries = getAllWeekDays(date);
+        LocalDate sunday = weekBoundaries[0];
+        LocalDate saturday = weekBoundaries[6];
+
+        for (LocalDate day : weekBoundaries) {
+            map.put(day, 0);
+        }
+        List<Bookings> bookingsList = bookingRepository.findBookingsBySundayAndSaturday(
+                sunday, saturday
+        );
+
+        for (Bookings booking : bookingsList) {
+            LocalDate tripDate = booking.getTripDate();
+            if (map.containsKey(tripDate)) {
+                map.put(tripDate, map.get(tripDate) + 1);
+            }
+        }
+
+        return map;
+    }
+
+    @Override
     public Integer countBookings() {
         return bookingRepository.countCompletedBookings();
     }
 
     @Override
     public Integer totalTrip() {
-        List<Bus> busList=busRepository.findAll();
-        int totalTrip=0;
+        List<Bus> busList = busRepository.findAll();
+        int totalTrip = 0;
         for (Bus bus : busList) {
-            int count=bookingRepository.totalTripOfBus(bus.getBusId());
-            totalTrip+=count;
+            int count = bookingRepository.totalTripOfBus(bus.getBusId());
+            totalTrip += count;
         }
         return totalTrip;
     }
@@ -300,8 +338,7 @@ public class BookingImplementation implements BookingInterface {
                 }
             }
 
-        }
-        else {
+        } else {
 
             float seatPrice = bus.getSeatPrice();
 
@@ -312,7 +349,6 @@ public class BookingImplementation implements BookingInterface {
 
         return totalRevenue;
     }
-
 
 
 }
