@@ -24,14 +24,5 @@ public class Query {
      public Query(){
 
      }
-public Query(String name, String email, String number, String category, String message) {
-    this.name = name;
-     this.email = email;
-     this.number = number;
-     this.category = category;
-     this.message = message;
-
-}
-
 
 }

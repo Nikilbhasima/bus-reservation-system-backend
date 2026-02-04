@@ -63,8 +63,8 @@ private AuthenticationManager authenticationManager;
         List<Users> users = userRepository.findAll();
 
         if(users.isEmpty()){
-            List<Roles> role1=roleRepository.findAll();
-            roles.addAll(role1);
+            Optional<Roles> role1 = roleRepository.findByRole("ROLE_ADMIN");
+            role1.ifPresent(roles::add);
         }else{
             if(authRequest.getRole().equals("ROLE_OWNER")){
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_OWNER");
