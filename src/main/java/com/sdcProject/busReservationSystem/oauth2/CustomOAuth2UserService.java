@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomOAuth2UserService extends OidcUserService {
@@ -39,15 +38,13 @@ public class CustomOAuth2UserService extends OidcUserService {
         // Convert user roles to authorities
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new CustomOAuth2User(oidcUser, authorities);
     }
 
     private Users findOrCreateUser(String email, String name, String picture,String address, String gender, String phoneNumber) {
         Optional<Users> existingUser = userRepository.findByEmail(email);
-        System.out.println(gender+":"+phoneNumber);
-
         if (existingUser.isPresent()) {
             return existingUser.get();
         }

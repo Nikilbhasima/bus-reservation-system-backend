@@ -70,6 +70,7 @@ public class EmployeeImplementation implements EmployeeInterface {
         driver1.setDriver_phone(driver.getDriver_phone());
         driver1.setDriver_license_number(driver.getDriver_license_number());
         driver1.setLicense_photo(driver.getLicense_photo());
+        driver1.setDriver_photo(driver.getDriver_photo());
         driver1.setBus(driver.getBus());
         if (driver.getBus() != null && driver.getBus().getBusId() != 0) {
             Bus oldBus = busRepository.findById(driver1.getBus().getBusId()).orElseThrow(() -> new RuntimeException("Bus not found"));

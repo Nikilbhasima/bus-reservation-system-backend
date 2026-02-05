@@ -13,12 +13,13 @@ import java.util.List;
 @RequestMapping("/api/auth/user/query")
 public class UserQueryController {
 
-    QueryRepository queryRepository;
+   private final QueryRepository queryRepository;
     // Add a new query
     @PostMapping("/add")
     public Query addQuery(@RequestBody Query query) {
         return queryRepository.save(query);
     }
+
     @GetMapping("/all/{email}")
     public List<UserQueryDto> getUserQueries(@PathVariable String email) {
         return queryRepository.findByEmail(email).stream().map(query -> {

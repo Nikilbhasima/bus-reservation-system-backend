@@ -22,7 +22,7 @@ public interface BookingRepository extends JpaRepository<Bookings, Integer> {
     List<Bookings> findBookingsByBusIdAndTripDate(@Param("busId") int busId,
                                                   @Param("tripDate") LocalDate tripDate);
 
-    @Query("SELECT b from Bookings  b WHERE b.busId=:bus AND b.bookingDate=:bookingDate")
+    @Query("SELECT b from Bookings  b WHERE b.busId=:bus AND b.tripDate=:bookingDate")
     List<Bookings> findByBookingDate(Bus bus, LocalDate bookingDate);
 
     @Query("""
