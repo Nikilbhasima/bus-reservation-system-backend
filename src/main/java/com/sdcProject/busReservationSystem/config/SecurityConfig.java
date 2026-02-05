@@ -62,7 +62,8 @@ public class SecurityConfig {
                 .securityMatcher("/api/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/**","/api/otp/**","/api/bus/getBusesByRoute/**",
+                        .requestMatchers("/api/auth/**"
+                                ,"/api/otp/**","/api/bus/getBusesByRoute/**",
                                 "/api/bus/getBusById/**",
                                 "/api/busBooking/getAllBookingsByBusIdAndDate/**").permitAll()
                         .anyRequest().authenticated())

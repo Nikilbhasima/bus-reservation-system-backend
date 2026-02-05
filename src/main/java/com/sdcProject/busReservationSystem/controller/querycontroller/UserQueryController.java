@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/auth/user/query")
 public class UserQueryController {
 
-    QueryRepository queryRepository;
+   private final QueryRepository queryRepository;
     // Add a new query
     @PostMapping("/add")
     public Query addQuery(@RequestBody Query query) {

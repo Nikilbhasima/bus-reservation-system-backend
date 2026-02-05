@@ -4,7 +4,7 @@
     import com.sdcProject.busReservationSystem.jwtConfig.JwtService;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
-    import org.springframework.beans.factory.annotation.Autowired;
+    import lombok.RequiredArgsConstructor;
     import org.springframework.security.core.Authentication;
     import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -14,13 +14,11 @@
     import java.io.IOException;
 
     @Component
+    @RequiredArgsConstructor
     public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-        @Autowired
-        private JwtService jwtService;
-
-        @Autowired
-        private MyUserDetailsService myUserDetailsService;
+        private final JwtService jwtService;
+        private final MyUserDetailsService myUserDetailsService;
 
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
