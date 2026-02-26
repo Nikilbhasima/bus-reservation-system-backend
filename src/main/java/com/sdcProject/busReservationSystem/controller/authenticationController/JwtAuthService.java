@@ -1,13 +1,12 @@
 package com.sdcProject.busReservationSystem.controller.authenticationController;
 
 import com.sdcProject.busReservationSystem.custome.MyUserDetailsService;
-import com.sdcProject.busReservationSystem.dto.UserDto;
 import com.sdcProject.busReservationSystem.jwtConfig.JwtService;
 import com.sdcProject.busReservationSystem.modal.Roles;
 import com.sdcProject.busReservationSystem.modal.Users;
 import com.sdcProject.busReservationSystem.repository.RoleRepository;
 import com.sdcProject.busReservationSystem.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,25 +18,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class JwtAuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private final MyUserDetailsService myUserDetailsService;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-@Autowired
-private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     public JwtAuthResponse register(AuthenticationRegisterRequest authRequest) {
         if (userRepository.findByEmail(authRequest.getEmail()).isPresent()) {
@@ -47,13 +41,13 @@ private AuthenticationManager authenticationManager;
             throw new RuntimeException("Phone number is already registered");
         }
 
-        Users user =new Users();
+        Users user = new Users();
         user.setUsername(authRequest.getUsername());
         user.setEmail(authRequest.getEmail());
         user.setPhoneNumber(authRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(authRequest.getPassword()));
 
-        if(authRequest.getImage()!=null){
+        if (authRequest.getImage() != null) {
             user.setImage(authRequest.getImage());
         }
 
@@ -62,28 +56,28 @@ private AuthenticationManager authenticationManager;
 
         List<Users> users = userRepository.findAll();
 
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             Optional<Roles> role1 = roleRepository.findByRole("ROLE_ADMIN");
             role1.ifPresent(roles::add);
-        }else{
-            if(authRequest.getRole().equals("ROLE_OWNER")){
+        } else {
+            if (authRequest.getRole().equals("ROLE_OWNER")) {
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_OWNER");
-                if(roleExists.isPresent()) {
+                if (roleExists.isPresent()) {
                     role = roleExists.get();
                     roles.add(role);
                 }
             }
-            if(authRequest.getRole().equals("ROLE_USER")){
+            if (authRequest.getRole().equals("ROLE_USER")) {
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_USER");
-                if(roleExists.isPresent()) {
+                if (roleExists.isPresent()) {
                     role = roleExists.get();
                     roles.add(role);
                 }
             }
 
-            if(authRequest.getRole().equals("ROLE_BUS")){
+            if (authRequest.getRole().equals("ROLE_BUS")) {
                 Optional<Roles> roleExists = roleRepository.findByRole("ROLE_BUS");
-                if(roleExists.isPresent()) {
+                if (roleExists.isPresent()) {
                     role = roleExists.get();
                     roles.add(role);
                 }
@@ -95,7 +89,7 @@ private AuthenticationManager authenticationManager;
         userRepository.save(user);
 
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getPhoneNumber());
-        String token=jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(userDetails);
 
         return new JwtAuthResponse(token);
 
